@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto;
+package com.vera.rnrc.dto.terror;
 
 import lombok.Data;
 

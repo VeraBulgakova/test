@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto;
+package com.vera.rnrc.dto.romu;
 
 import lombok.Data;
 
@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class Nationality {
-    @XmlElement(name = "Наименование")
-    private String name;
+@XmlAccessorType(XmlAccessType.FIELD)
+public class IndividualAddressDTO {
+    @XmlElement(name = "COUNTRY")
+    private String country;
 }

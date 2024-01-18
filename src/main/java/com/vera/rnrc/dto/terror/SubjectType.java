@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto;
+package com.vera.rnrc.dto.terror;
 
 import lombok.Data;
 
@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class AddressType {
+public class SubjectType {
     @XmlElement(name = "Идентификатор")
-    private long AddressTypeId;
+    private long SubjectTypeId;
 
     @XmlElement(name = "Наименование")
     private String name;

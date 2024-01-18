@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto;
+package com.vera.rnrc.dto.terror;
 
 import lombok.Data;
 
@@ -8,7 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class History {
-    @XmlElement(name = "ДатаВключения")
-    private String DateOfInclusion;
+public class Country {
+    @XmlElement(name = "Наименование")
+    private String name;
+    @XmlElement(name = "Код")
+    private String code;
 }

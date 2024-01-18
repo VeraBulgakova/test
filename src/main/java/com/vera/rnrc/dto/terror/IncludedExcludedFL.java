@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto;
+package com.vera.rnrc.dto.terror;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class FL {
+public class IncludedExcludedFL {
     @XmlElement(name = "ФИО")
     private String fullName;
 
@@ -21,16 +21,10 @@ public class FL {
     private String name;
 
     @XmlElement(name = "Отчество")
-    private String patronymic;
-
-    @XmlElement(name = "ФИОЛат")
-    private String fullNameLat;
+    private String petronymic;
 
     @XmlElement(name = "ДатаРождения")
-    private String DateOfBirth;
-
-    @XmlElement(name = "ГодРождения")
-    private int yearOfBirth;
+    private String dateOfBirth;
 
     @XmlElement(name = "МестоРождения")
     private String placeOfBirth;
@@ -45,11 +39,4 @@ public class FL {
     @XmlElement(name = "Документ")
     private List<Document> documentList;
 
-    @XmlElementWrapper(name = "СписокДрНаименований")
-    @XmlElement(name = "ДрНаименование")
-    private List<OtherNames> listOfOtherNames;
-
-    @XmlElementWrapper(name = "СписокГражданств")
-    @XmlElement(name = "Гражданство")
-    private List<Nationality> nationalityList;
 }
