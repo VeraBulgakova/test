@@ -18,9 +18,6 @@ public class LegalPersonEntity {
     @Column(name = "list_name")
     private String listName;
 
-    @Column(name = "subject_id")
-    private Long subjectId;
-
     @Column(name = "ogrn")
     private String ogrn;
 
@@ -29,4 +26,7 @@ public class LegalPersonEntity {
 
     @Column(name = "organization_name")
     private String organizationName;
+
+    @Column(name = "resident_sign")
+    private String residentSign;
 }

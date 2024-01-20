@@ -1,6 +1,9 @@
 package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.terror.Document;
+import com.vera.rnrc.dto.terror.FL;
+import com.vera.rnrc.dto.terror.Organization;
+import com.vera.rnrc.dto.terror.Subject;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
@@ -34,8 +37,61 @@ public class SubjectService {
         return legalPersonRepository.saveAll(legalPersons);
     }
 
-    public PhysicalPersonEntity savePhysicalPerson(PhysicalPersonEntity physicalPerson) {
-        return physicalPersonRepository.save(physicalPerson);
+    public PhysicalPersonEntity convertToPhysicalPersonList(Subject subject) {
+        PhysicalPersonEntity entity = new PhysicalPersonEntity();
+        FL physicalPerson = subject.getFl();
+        List<Document> documents = physicalPerson.getDocumentList(); // Получение списка документов
+        if (documents == null || documents.isEmpty()) {
+            entity.setPassportSeries("Нет данных");
+            entity.setPassportNumber("Нет данных");
+        } else {
+            entity.setPassportSeries(selectLatestDocument(documents).getSeries());
+            entity.setPassportNumber(selectLatestDocument(documents).getNumber());
+        }
+        entity.setId(subject.getSubjectId());
+        entity.setInn(defaultIfNullOrEmptyOrShort(physicalPerson.getINN()));
+        entity.setFullName(defaultIfNullOrEmptyOrShort(physicalPerson.getFullName()));
+        entity.setSurname(defaultIfNullOrEmptyOrShort(physicalPerson.getSurname()));
+        entity.setName(defaultIfNullOrEmptyOrShort(physicalPerson.getName()));
+        entity.setPatronymic(defaultIfNullOrEmptyOrShort(physicalPerson.getPatronymic()));
+        entity.setDateOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getDateOfBirth()));
+        entity.setPlaceOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getPlaceOfBirth()));
+        entity.setResidentSign(getResidentSignForPhysicalPerson(subject.getSubjectType().getSubjectTypeId()));
+
+        return entity;
+    }
+
+    public LegalPersonEntity convertToLegalEntityList(Subject subject) {
+        LegalPersonEntity entity = new LegalPersonEntity();
+        Organization organization = subject.getOrganization();
+
+        entity.setId(subject.getSubjectId());
+        entity.setInn(defaultIfNullOrEmptyOrShort(organization.getInn()));
+        entity.setOgrn(defaultIfNullOrEmptyOrShort(organization.getOgrn()));
+        entity.setOrganizationName(defaultIfNullOrEmptyOrShort(organization.getOrganizationName()));
+        entity.setResidentSign(getResidentSignForLegalPerson(subject.getSubjectType().getSubjectTypeId()));
+
+        return entity;
+    }
+
+    public String getResidentSignForLegalPerson(long subjectTypeId) {
+        if (subjectTypeId == 1) {
+            return "Нерезидент";
+        } else if (subjectTypeId == 3) {
+            return "Резидент";
+        } else return "Нет данных";
+    }
+
+    public String getResidentSignForPhysicalPerson(long subjectTypeId) {
+        if (subjectTypeId == 2) {
+            return "Нерезидент";
+        } else if (subjectTypeId == 4) {
+            return "Резидент";
+        } else return "Нет данных";
+    }
+
+    public String defaultIfNullOrEmptyOrShort(String value) {
+        return (value == null || value.trim().length() < 2) ? "Нет данных" : value;
     }
 
     public Document selectLatestDocument(List<Document> documents) {

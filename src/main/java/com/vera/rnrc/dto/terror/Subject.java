@@ -23,6 +23,9 @@ public class Subject {
     @XmlElement(name = "ФЛ")
     private FL fl;
 
+    @XmlElement(name = "Орг")
+    private Organization organization;
+
     @XmlElementWrapper(name = "СписокАдресов")
     @XmlElement(name = "Адрес")
     private List<Address> listOfAddress;
