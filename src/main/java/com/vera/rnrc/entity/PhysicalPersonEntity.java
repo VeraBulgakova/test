@@ -10,7 +10,7 @@ import java.util.Date;
 public class PhysicalPersonEntity {
 
     @Id
-    private Long id; // Уникальный идентификатор, предполагается, что у вас есть такое поле
+    private Long id;
 
     @Column(name = "date_list")
     private Date dateList;
@@ -40,9 +40,12 @@ public class PhysicalPersonEntity {
     private String patronymic;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
     @Column(name = "place_of_birth")
     private String placeOfBirth;
+
+    @Column(name = "resident_sign")
+    private String residentSign;
 
 }
