@@ -56,16 +56,21 @@ public class ParserController {
             JAXBContext context = JAXBContext.newInstance(Perechen.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             Perechen jaxbObject = (Perechen) unmarshaller.unmarshal(reader);
-
+            String fileName = file.getOriginalFilename();
+            int lastIndexOfDot = fileName.lastIndexOf(".");
+            if (lastIndexOfDot > 0) {
+                fileName = fileName.substring(0, lastIndexOfDot);
+            }
+            String finalFileName = fileName;
             // Предполагается, что у вас есть метод для получения наименования субъекта
             List<Subject> subjectsList = jaxbObject.getActualPerechen().getSubjects();
             List<PhysicalPersonEntity> physicalPersonEntities = subjectsList.stream()
                     .filter(subject -> subject.getSubjectType().getName().contains("Физическое лицо"))
-                    .map(subjectService::convertToPhysicalPersonList)
+                    .map(subject -> subjectService.convertToPhysicalPersonList(subject, finalFileName, type))
                     .toList();
             List<LegalPersonEntity> legalPersonEntities = subjectsList.stream()
                     .filter(subject -> subject.getSubjectType().getName().contains("Юридическое лицо"))
-                    .map(subjectService::convertToLegalEntityList)
+                    .map(subject -> subjectService.convertToLegalEntityList(subject, finalFileName, type))
                     .toList();
 
             subjectService.saveAllLegalPerson(legalPersonEntities);
@@ -83,16 +88,11 @@ public class ParserController {
                                                      @RequestParam("date") Optional<LocalDate> date) {
         // Логика получения данных для юридического лица.
         // Если дата не предоставлена, используется последняя доступная дата.
-        LocalDate queryDate = date.orElseGet(this::getLastAvailableDate);
+//        LocalDate queryDate = date.orElseGet(this::getLastAvailableDate);
 
         // Получение данных по entityId и queryDate
         // Например, из базы данных или внутреннего сервиса
 
-        return ResponseEntity.ok("Данные для юридического лица " + entityId + " на дату " + queryDate);
-    }
-
-    private LocalDate getLastAvailableDate() {
-        // Здесь должна быть логика для определения последней доступной даты
-        return LocalDate.now(); // Пример, в реальности здесь может быть запрос к базе данных
+        return ResponseEntity.ok("Данные для юридического лица " + entityId + " на дату ");
     }
 }

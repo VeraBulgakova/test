@@ -37,7 +37,7 @@ public class SubjectService {
         return legalPersonRepository.saveAll(legalPersons);
     }
 
-    public PhysicalPersonEntity convertToPhysicalPersonList(Subject subject) {
+    public PhysicalPersonEntity convertToPhysicalPersonList(Subject subject, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
         FL physicalPerson = subject.getFl();
         List<Document> documents = physicalPerson.getDocumentList(); // Получение списка документов
@@ -49,6 +49,8 @@ public class SubjectService {
             entity.setPassportNumber(selectLatestDocument(documents).getNumber());
         }
         entity.setId(subject.getSubjectId());
+        entity.setListName(listName);
+        entity.setDateList(fileName);
         entity.setInn(defaultIfNullOrEmptyOrShort(physicalPerson.getINN()));
         entity.setFullName(defaultIfNullOrEmptyOrShort(physicalPerson.getFullName()));
         entity.setSurname(defaultIfNullOrEmptyOrShort(physicalPerson.getSurname()));
@@ -56,39 +58,33 @@ public class SubjectService {
         entity.setPatronymic(defaultIfNullOrEmptyOrShort(physicalPerson.getPatronymic()));
         entity.setDateOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getDateOfBirth()));
         entity.setPlaceOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getPlaceOfBirth()));
-        entity.setResidentSign(getResidentSignForPhysicalPerson(subject.getSubjectType().getSubjectTypeId()));
-
+        entity.setResidentSign(getResidentSign(subject.getSubjectType().getSubjectTypeId()));
         return entity;
     }
 
-    public LegalPersonEntity convertToLegalEntityList(Subject subject) {
+    public LegalPersonEntity convertToLegalEntityList(Subject subject, String fileName, String listName) {
         LegalPersonEntity entity = new LegalPersonEntity();
         Organization organization = subject.getOrganization();
 
         entity.setId(subject.getSubjectId());
+        entity.setDateList(fileName);
+        entity.setListName(listName);
         entity.setInn(defaultIfNullOrEmptyOrShort(organization.getInn()));
         entity.setOgrn(defaultIfNullOrEmptyOrShort(organization.getOgrn()));
         entity.setOrganizationName(defaultIfNullOrEmptyOrShort(organization.getOrganizationName()));
-        entity.setResidentSign(getResidentSignForLegalPerson(subject.getSubjectType().getSubjectTypeId()));
+        entity.setResidentSign(getResidentSign(subject.getSubjectType().getSubjectTypeId()));
 
         return entity;
     }
 
-    public String getResidentSignForLegalPerson(long subjectTypeId) {
-        if (subjectTypeId == 1) {
+    public String getResidentSign(long subjectTypeId) {
+        if (subjectTypeId == 1 || subjectTypeId == 2) {
             return "Нерезидент";
-        } else if (subjectTypeId == 3) {
+        } else if (subjectTypeId == 3 || subjectTypeId == 4) {
             return "Резидент";
         } else return "Нет данных";
     }
 
-    public String getResidentSignForPhysicalPerson(long subjectTypeId) {
-        if (subjectTypeId == 2) {
-            return "Нерезидент";
-        } else if (subjectTypeId == 4) {
-            return "Резидент";
-        } else return "Нет данных";
-    }
 
     public String defaultIfNullOrEmptyOrShort(String value) {
         return (value == null || value.trim().length() < 2) ? "Нет данных" : value;
