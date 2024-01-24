@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: legal_person
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_legal_person
+              - column:
+                  name: date_list
+                  type: varchar(255)
+              - column:
+                  name: list_name
+                  type: varchar(255)
+              - column:
+                  name: ogrn
+                  type: varchar(255)
+              - column:
+                  name: inn
+                  type: varchar(255)
+              - column:
+                  name: organization_name
+                  type: varchar(255)
+              - column:
+                  name: resident_sign
+                  type: varchar(255)

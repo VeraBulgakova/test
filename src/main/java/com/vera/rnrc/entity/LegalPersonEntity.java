@@ -12,7 +12,7 @@ import lombok.Data;
 @Table(name = "legal_person")
 public class LegalPersonEntity {
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "date_list")
     private String dateList;

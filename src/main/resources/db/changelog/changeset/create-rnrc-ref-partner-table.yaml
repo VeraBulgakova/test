@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: rnrc_ref_partner
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+              - column:
+                  name: partnername
+                  type: varchar(255)
+              - column:
+                  name: inn
+                  type: varchar(255)
+              - column:
+                  name: fullname
+                  type: varchar(255)
+              - column:
+                  name: resident
+                  type: varchar(255)
+              - column:
+                  name: ogrn
+                  type: varchar(255)

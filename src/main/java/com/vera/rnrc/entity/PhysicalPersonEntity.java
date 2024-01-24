@@ -14,7 +14,7 @@ import java.util.Date;
 public class PhysicalPersonEntity {
 
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "date_list")
     private String dateList;

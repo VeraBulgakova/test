@@ -1,7 +1,5 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.mvk.MVKDecisionListDTO;
-import com.vera.rnrc.dto.romu.ConsolidatedListDTO;
 import com.vera.rnrc.dto.terror.*;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
@@ -9,7 +7,6 @@ import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -17,12 +14,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class SubjectService {
+public class TerrorService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
 
     @Autowired
-    public SubjectService(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
+    public TerrorService(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
         this.physicalPersonRepository = physicalPersonRepository;
         this.legalPersonRepository = legalPersonRepository;
     }
@@ -132,4 +129,3 @@ public class SubjectService {
 
     }
 }
-
