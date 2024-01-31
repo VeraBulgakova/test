@@ -16,6 +16,9 @@ public class SubjectDTO {
     @XmlElement(name = "ТипСубъекта")
     private SubjectType subjectType;
 
+    @XmlElement(name = "ЮЛ")
+    private LegalEntity legalEntity;
+
     @XmlElement(name = "ФЛ")
     private FLDTO fl;
 

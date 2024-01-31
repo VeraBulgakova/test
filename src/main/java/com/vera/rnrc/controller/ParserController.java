@@ -1,11 +1,14 @@
 package com.vera.rnrc.controller;
 
-import com.vera.rnrc.dto.QlikViewRequest;
-import com.vera.rnrc.dto.ResponseDTO;
+import com.vera.rnrc.dto.request.QlikViewRequest;
+import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.dto.mvk.MVKDecisionListDTO;
 import com.vera.rnrc.dto.romu.ConsolidatedListDTO;
 import com.vera.rnrc.dto.terror.Perechen;
-import com.vera.rnrc.service.*;
+import com.vera.rnrc.service.MVKService;
+import com.vera.rnrc.service.ROMUService;
+import com.vera.rnrc.service.ResponseService;
+import com.vera.rnrc.service.TerrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +21,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class ParserController {
-
-    private final SubjectService subjectService;
     private final ResponseService service;
     private final TerrorService terrorService;
     private final MVKService mvkService;
     private final ROMUService romuService;
 
     @Autowired
-    public ParserController(SubjectService subjectService, ResponseService service, TerrorService terrorService, MVKService mvkService, ROMUService romuService) {
-        this.subjectService = subjectService;
+    public ParserController(ResponseService service, TerrorService terrorService, MVKService mvkService, ROMUService romuService) {
         this.service = service;
         this.terrorService = terrorService;
         this.mvkService = mvkService;
@@ -40,20 +42,18 @@ public class ParserController {
     }
 
     @GetMapping("/checkUsers")
-    public ResponseDTO checkUsers(@RequestParam("file") MultipartFile file) throws JAXBException {
+    public List<ResponseDTO> checkUsers(@RequestParam("file") MultipartFile file) throws JAXBException {
         if (file.isEmpty()) {
-            return new ResponseDTO();
+            return Collections.singletonList(new ResponseDTO());
         }
         try {
             QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
-            ResponseDTO response = service.getCheckResponse(jaxbObject);
-            return response;
+            return service.getCheckResponse(jaxbObject);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseDTO();
+            return Collections.singletonList(new ResponseDTO());
         }
     }
-
     @PostMapping("/uploadXml")
     public ResponseEntity<String> uploadXmlFile(@RequestParam("file") MultipartFile file,
                                                 @RequestParam("fileType") String type) {
@@ -68,17 +68,14 @@ public class ParserController {
                 case "Террор":
                     Perechen perechen = processXmlFile(file, Perechen.class, true);
                     terrorService.saveAll(perechen, fileName, type);
-//                    subjectService.saveAll(perechen, fileName, type);
                     break;
                 case "МВК":
                     MVKDecisionListDTO MVKDecisionList = processXmlFile(file, MVKDecisionListDTO.class, false);
                     mvkService.saveAll(MVKDecisionList, fileName, type);
-//                    subjectService.saveAll(MVKDecisionList, fileName, type);
                     break;
                 case "РОМУ":
                     ConsolidatedListDTO consolidatedListDTO = processXmlFile(file, ConsolidatedListDTO.class, true);
-//                    romuService.saveAll(consolidatedListDTO, fileName, type);
-//                    subjectService.saveAll(consolidatedListDTO, fileName, type);
+                    romuService.saveAll(consolidatedListDTO, fileName, type);
                     break;
                 default:
                     return ResponseEntity.badRequest().body("Неизвестный тип файла");

@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -26,6 +29,9 @@ public class IndividualDTO {
 
     @XmlElement(name = "THIRD_NAME")
     private String thirdName;
+
+    @XmlElement(name = "FOURTH_NAME")
+    private String fourthName;
 
     @XmlElement(name = "UN_LIST_TYPE")
     private String unListType;
@@ -77,4 +83,10 @@ public class IndividualDTO {
 
     @XmlElement(name = "INDIVIDUAL_DOCUMENT")
     private IndividualDocumentDTO document;
+
+    public String getFullName() {
+        return Stream.of(firstName, secondName, thirdName, fourthName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
+    }
 }

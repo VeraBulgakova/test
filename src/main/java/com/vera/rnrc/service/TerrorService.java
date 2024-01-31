@@ -27,23 +27,6 @@ public class TerrorService {
     @Transactional
     public void saveAll(Perechen jaxbObject, String finalFileName, String type) {
 
-//        switch (type) {
-//            case "Террор":
-//                Perechen perechen = processXmlFile(file, Perechen.class, true);
-//                subjectService.saveAll(perechen, fileName, type);
-//                break;
-//            case "МВК":
-//                MVKDecisionListDTO MVKDecisionList = processXmlFile(file, MVKDecisionListDTO.class, false);
-//                subjectService.saveAll(MVKDecisionList, fileName, type);
-//                break;
-//            case "РОМУ":
-//                ConsolidatedListDTO consolidatedListDTO = processXmlFile(file, ConsolidatedListDTO.class, true);
-//                subjectService.saveAll(consolidatedListDTO, fileName, type);
-//                break;
-//            default:
-//                return ResponseEntity.badRequest().body("Неизвестный тип файла");
-//        }
-
         List<Subject> subjectsList = jaxbObject.getActualPerechen().getSubjects();
         List<PhysicalPersonEntity> physicalPersonEntities = subjectsList.stream()
                 .filter(subject -> subject.getSubjectType().getName().contains("Физическое лицо"))
@@ -58,12 +41,10 @@ public class TerrorService {
         saveAllPhysicalPersons(physicalPersonEntities);
     }
 
-    @Transactional
     public void saveAllPhysicalPersons(List<PhysicalPersonEntity> physicalPersons) {
         physicalPersonRepository.saveAll(physicalPersons);
     }
 
-    @Transactional
     public void saveAllLegalPerson(List<LegalPersonEntity> legalPersons) {
         legalPersonRepository.saveAll(legalPersons);
     }
@@ -73,8 +54,8 @@ public class TerrorService {
         FL physicalPerson = subject.getFl();
         List<Document> documents = physicalPerson.getDocumentList(); // Получение списка документов
         if (documents == null || documents.isEmpty()) {
-            entity.setPassportSeries("Нет данных");
-            entity.setPassportNumber("Нет данных");
+            entity.setPassportSeries(null);
+            entity.setPassportNumber(null);
         } else {
             entity.setPassportSeries(selectLatestDocument(documents).getSeries());
             entity.setPassportNumber(selectLatestDocument(documents).getNumber());
@@ -82,13 +63,17 @@ public class TerrorService {
         entity.setId(String.valueOf(subject.getSubjectId()));
         entity.setListName(listName);
         entity.setDateList(fileName);
-        entity.setInn(defaultIfNullOrEmptyOrShort(physicalPerson.getINN()));
-        entity.setFullName(defaultIfNullOrEmptyOrShort(physicalPerson.getFullName()));
-        entity.setSurname(defaultIfNullOrEmptyOrShort(physicalPerson.getSurname()));
-        entity.setName(defaultIfNullOrEmptyOrShort(physicalPerson.getName()));
-        entity.setPatronymic(defaultIfNullOrEmptyOrShort(physicalPerson.getPatronymic()));
-        entity.setDateOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getDateOfBirth()));
-        entity.setPlaceOfBirth(defaultIfNullOrEmptyOrShort(physicalPerson.getPlaceOfBirth()));
+        entity.setInn(physicalPerson.getINN());
+        entity.setFullName(physicalPerson.getFullName());
+        entity.setSurname(physicalPerson.getSurname());
+        entity.setName(physicalPerson.getName());
+        entity.setPatronymic(physicalPerson.getPatronymic());
+        if (physicalPerson.getDateOfBirth() != null) {
+            entity.setDateOfBirth(physicalPerson.getDateOfBirth().replaceAll("-", ""));
+        } else{
+            entity.setDateOfBirth(null);
+        }
+        entity.setPlaceOfBirth(physicalPerson.getPlaceOfBirth());
         entity.setResidentSign(getResidentSign(subject.getSubjectType().getSubjectTypeId()));
         return entity;
     }
@@ -100,9 +85,9 @@ public class TerrorService {
         entity.setId(String.valueOf(subject.getSubjectId()));
         entity.setDateList(fileName);
         entity.setListName(listName);
-        entity.setInn(defaultIfNullOrEmptyOrShort(organization.getInn()));
-        entity.setOgrn(defaultIfNullOrEmptyOrShort(organization.getOgrn()));
-        entity.setOrganizationName(defaultIfNullOrEmptyOrShort(organization.getOrganizationName()));
+        entity.setInn(organization.getInn());
+        entity.setOgrn(organization.getOgrn());
+        entity.setOrganizationName(organization.getOrganizationName());
         entity.setResidentSign(getResidentSign(subject.getSubjectType().getSubjectTypeId()));
 
         return entity;
@@ -116,10 +101,6 @@ public class TerrorService {
         } else return "Нет данных";
     }
 
-
-    public String defaultIfNullOrEmptyOrShort(String value) {
-        return (value == null || value.trim().length() < 2) ? "Нет данных" : value;
-    }
 
     public Document selectLatestDocument(List<Document> documents) {
         return documents.stream()

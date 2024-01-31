@@ -12,6 +12,7 @@ public class ConsolidatedListDTO {
 
     @XmlElement(name = "INDIVIDUALS")
     private Individuals individuals;
+
     @XmlElementWrapper(name = "ENTITIES")
     @XmlElement(name = "ENTITY")
     private List<EntityDTO> entities;

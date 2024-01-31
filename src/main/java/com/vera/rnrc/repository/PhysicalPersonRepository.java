@@ -9,16 +9,23 @@ import java.util.List;
 
 @Repository
 public interface PhysicalPersonRepository extends JpaRepository<PhysicalPersonEntity, Long> {
-    @Query(value = "SELECT * " +
-            "FROM physical_person pp " +
-            "JOIN index_olr_partnerlinkedstructure pls ON pp.inn = pls.inn " +
-            "AND pp.passportSeries = pls.docseries " +
-            "AND pp.passportNumber = pls.docnumber " +
-//            "AND pp.full_name = pls.fullname "+
-            "AND pp.surname = pls.lastname " +
-            "AND pp.name = pls.firstname " +
-            "AND pp.patronimic = pls.middlename " +
-            "AND pp.placeOfBirth = pls.placeofbirth " +
-            "AND pp.dateOfBirth = pls.dateofbirth;", nativeQuery = true)
-    List<PhysicalPersonEntity> findMatchingRecords(String someCondition);
+    //    @Query(value = "select p.id, p.full_name,p.name from physical_person p join index_olr_partnerlinkedstructure iop " +
+//            " on p.id = iop.id where p.name=iop.firstname;", nativeQuery = true)
+    @Query(value = "select p.id,p.date_list, " +
+            "p.list_name, " +
+            "p.inn, " +
+            "p.passport_series, " +
+            "p.passport_number, " +
+            "p.full_name, " +
+            "p.surname, " +
+            "p.name, " +
+            "p.patronymic, " +
+            "p.date_of_birth, " +
+            "p.place_of_birth, " +
+            "p.resident_sign " +
+            "from physical_person p " +
+            "join index_olr_partnerlinkedstructure iop " +
+            "on p.id = iop.id " +
+            "where p.name = iop.firstname;", nativeQuery = true)
+    List<PhysicalPersonEntity> findMatchingRecords();
 }

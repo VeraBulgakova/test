@@ -9,9 +9,13 @@ import javax.xml.bind.annotation.XmlElement;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IndividualDateOfBirthDTO {
+
     @XmlElement(name = "TYPE_OF_DATE")
     private String typeOfDate;
 
     @XmlElement(name = "YEAR")
     private Integer year;
+
+    @XmlElement(name = "DATE")
+    private String date;
 }
