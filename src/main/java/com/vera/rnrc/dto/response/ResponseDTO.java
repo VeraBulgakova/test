@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ResponseDTO {
-    private Long requestId;
-    private Long partnerId;
+    private String requestId;
+    private String partnerId;
     private String checkObject;
     private String linkedStructureOrder;
     private String participantOrder;
@@ -14,5 +14,5 @@ public class ResponseDTO {
     private String listDate;
     private String listName;
     private String checkResult;
-    private Long listId;
+    private String listId;
 }

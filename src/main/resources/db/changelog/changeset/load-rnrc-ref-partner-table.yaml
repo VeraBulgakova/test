@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: vera.bulgakova
+      changes:
+        - loadData:
+            file: RNRC_REF_PARTNER.csv
+            tableName: rnrc_ref_partner
+            separator: ;
+            usePreparedStatements: true
+            columns:
+              - column:
+                  name: id
+                  type: string
+              - column:
+                  name: partnername
+                  type: string
+              - column:
+                  name: inn
+                  type: string
+              - column:
+                  name: fullname
+                  type: string
+              - column:
+                  name: resident
+                  type: string
+              - column:
+                  name: ogrn
+                  type: string

@@ -70,7 +70,7 @@ public class TerrorService {
         entity.setPatronymic(physicalPerson.getPatronymic());
         if (physicalPerson.getDateOfBirth() != null) {
             entity.setDateOfBirth(physicalPerson.getDateOfBirth().replaceAll("-", ""));
-        } else{
+        } else {
             entity.setDateOfBirth(null);
         }
         entity.setPlaceOfBirth(physicalPerson.getPlaceOfBirth());

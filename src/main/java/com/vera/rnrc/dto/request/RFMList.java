@@ -21,6 +21,7 @@ public class RFMList {
 
     @XmlElement(name = "romlist")
     private boolean romList;
+
     public String getListName() {
         if (terroristList) {
             return "Террор";
@@ -33,6 +34,7 @@ public class RFMList {
         }
         return null; // или возвращать пустую строку или другое значение по умолчанию
     }
+
     public String getListFullName() {
         if (terroristList) {
             return "Перечень лиц, причастных к экстремизму, терроризму";

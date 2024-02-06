@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: vera.bulgakova
+      changes:
+        - loadData:
+            file: index_olr_partnerlinkedstructure.csv
+            tableName: index_olr_partnerlinkedstructure
+            separator: ;
+            usePreparedStatements: true
+            columns:
+              - column:
+                  name: lastname
+                  type: string
+              - column:
+                  name: dateofbirth
+                  type: string
+              - column:
+                  name: firstname
+                  type: string
+              - column:
+                  name: countryname
+                  type: string
+              - column:
+                  name: docseries
+                  type: string
+              - column:
+                  name: docnumber
+                  type: string
+              - column:
+                  name: inn
+                  type: string
+              - column:
+                  name: middlename
+                  type: string
+              - column:
+                  name: placeofbirth
+                  type: string
+              - column:
+                  name: linkedstructuretype
+                  type: string
+              - column:
+                  name: fullname
+                  type: string
+              - column:
+                  name: isresident
+                  type: boolean

@@ -9,9 +9,9 @@ databaseChangeLog:
               - column:
                   name: pzinskey
                   type: varchar(255)
-              - column:
-                  name: id
-                  type: varchar(255)
+#              - column:
+#                  name: id
+#                  type: varchar(255)
               - column:
                   name: lastname
                   type: varchar(255)
@@ -46,5 +46,11 @@ databaseChangeLog:
                   name: fullname
                   type: varchar(255)
               - column:
-                  name: isresident
+                  name: shortname
+                  type: varchar(255)
+              - column:
+                  name: managementbodyordernumber
+                  type: varchar(255)
+              - column:
+                  name: participantordernumber
                   type: varchar(255)
