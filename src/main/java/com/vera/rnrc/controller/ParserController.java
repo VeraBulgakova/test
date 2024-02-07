@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,62 +46,14 @@ public class ParserController {
         this.romuService = romuService;
     }
 
-    @PostMapping("/checkUsers")
-    public List<ResponseDTO> checkUsers(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
+    @PostMapping("/checkAllUsers")
+    public List<ResponseDTO> checkAllUsers(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
         if (file.isEmpty()) {
             return Collections.singletonList(new ResponseDTO());
         }
         try {
             QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
-            return service.getCheckResponseForAllPerson(jaxbObject, checkDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.singletonList(new ResponseDTO());
-        }
-    }
-
-    @PostMapping("/checkUsersTwoRequest")
-    public List<ResponseDTO> checkUsersTwoRequest(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
-        if (file.isEmpty()) {
-            return Collections.singletonList(new ResponseDTO());
-        }
-        try {
-            QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
-           List<ResponseDTO> resultList= service.getCheckResponseForPhysic(jaxbObject, checkDate);
-            service.createViewForPhysicPerson("01.01.2021", "Террор");
-            return resultList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.singletonList(new ResponseDTO());
-        }
-    }
-
-    @PostMapping("/checkPhysical")
-    public List<ResponseDTO> checkPhysical(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
-        if (file.isEmpty()) {
-            return Collections.singletonList(new ResponseDTO());
-        }
-        try {
-            QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
-            List<ResponseDTO> responseList = new ArrayList<>();
-            responseList.addAll(service.getCheckResponseForPhysic(jaxbObject, checkDate));
-            return responseList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.singletonList(new ResponseDTO());
-        }
-    }
-
-    @PostMapping("/checkLegal")
-    public List<ResponseDTO> checkLegal(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
-        if (file.isEmpty()) {
-            return Collections.singletonList(new ResponseDTO());
-        }
-        try {
-            QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
-            List<ResponseDTO> responseList = new ArrayList<>();
-            responseList.addAll(service.getCheckResponseForLegal(jaxbObject, checkDate));
-            return responseList;
+            return service.getCheckResponseForAllUsers(jaxbObject, checkDate);
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.singletonList(new ResponseDTO());

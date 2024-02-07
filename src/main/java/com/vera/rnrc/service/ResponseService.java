@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,10 +67,38 @@ public class ResponseService {
     }
 
     @Transactional
-    public List<ResponseDTO> getCheckResponseForPhysic(QlikViewRequest request, LocalDate checkDate) {
-        List<ResponseEntity> matchingRecords = responseRepository.findPhisicalPersonResult2();
+    public void createViewForLegalPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
+        String sql = "CREATE or replace VIEW viewLegal AS " +
+                "SELECT l.id, r.id as partner_id " +
+                "FROM rnrc_ref_partner r " +
+                "         JOIN legal_person l ON " +
+                "        l.inn = r.inn " +
+                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
+                "        AND l.date_list = '" + dateList.replace("'", "''") + "' " +
+                "union " +
+                "SELECT l.id, r.id as partner_id " +
+                "FROM rnrc_ref_partner r " +
+                "         JOIN legal_person l ON " +
+                "        l.ogrn = r.ogrn " +
+                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
+                "        AND l.date_list = '" + dateList.replace("'", "''") + "' " +
+                "union " +
+                "SELECT l.id, r.id as partner_id " +
+                "FROM rnrc_ref_partner r " +
+                "         JOIN legal_person l ON " +
+                "        l.organization_name = r.fullname " +
+                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
+                "        AND l.date_list = '" + dateList.replace("'", "''") + "' ";
+        entityManager.createNativeQuery(sql).executeUpdate();
+    }
+
+    @Transactional
+    public List<ResponseDTO> getCheckResponseForAllUsers(QlikViewRequest request, LocalDate checkDate) {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+        createViewForPhysicPerson(date, "Террор");
+        responseRepository.insertResponseRecordsFromTable();
+        List<ResponseEntity> matchingRecords = responseRepository.findAllResponses();
 
         List<ResponseDTO> responseList = matchingRecords.stream().map(record -> {
             ResponseDTO responseDTO = new ResponseDTO();
@@ -88,58 +115,8 @@ public class ResponseService {
             responseDTO.setListId(record.getListId());
             return responseDTO;
         }).collect(Collectors.toList());
-
+        responseRepository.cleanResultTable();
         return responseList;
     }
-//
-//    @Transactional
-//    public List<ResponseDTO> getCheckResponseForLegal(QlikViewRequest request, LocalDate checkDate) {
-//        List<ResponseEntity> matchingRecords2 = responseRepository.findLegalPersonResult();
-//        List<ResponseDTO> responseList = new ArrayList<>();
-//        String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-//        String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-//        for (ResponseEntity record : matchingRecords2) {
-//            ResponseDTO responseDTO = new ResponseDTO();
-//
-//            responseDTO.setRequestId(request.getRequestId());
-//            responseDTO.setPartnerId(record.getPartnerId());
-//            responseDTO.setCheckObject(record.getCheckObject());
-//            responseDTO.setLinkedStructureOrder(record.getLinkedStructureOrder());
-//            responseDTO.setParticipantOrder(record.getParticipantOrder());
-//            responseDTO.setShortName(record.getShortName());
-//            responseDTO.setCheckDate(dateNow);
-//            responseDTO.setListDate(date);
-//            responseDTO.setListName(request.getRfmList().getListFullName());
-//            responseDTO.setCheckResult(record.getCheckResult() + date);
-//            responseDTO.setListId(record.getListId());
-//            responseList.add(responseDTO);
-//        }
-//        return responseList;
-//    }
-//
-//    @Transactional
-//    public List<ResponseDTO> getCheckResponseForAllPerson(QlikViewRequest request, LocalDate checkDate) {
-//        List<ResponseEntity> matchingRecords2 = responseRepository.findAllPerson();
-//        List<ResponseDTO> responseList = new ArrayList<>();
-//        String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-//        String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-//        for (ResponseEntity record : matchingRecords2) {
-//            ResponseDTO responseDTO = new ResponseDTO();
-//
-//            responseDTO.setRequestId(request.getRequestId());
-//            responseDTO.setPartnerId(record.getPartnerId());
-//            responseDTO.setCheckObject(record.getCheckObject());
-//            responseDTO.setLinkedStructureOrder(record.getLinkedStructureOrder());
-//            responseDTO.setParticipantOrder(record.getParticipantOrder());
-//            responseDTO.setShortName(record.getShortName());
-//            responseDTO.setCheckDate(dateNow);
-//            responseDTO.setListDate(date);
-//            responseDTO.setListName(request.getRfmList().getListFullName());
-//            responseDTO.setCheckResult(record.getCheckResult() + date);
-//            responseDTO.setListId(record.getListId());
-//            responseList.add(responseDTO);
-//        }
-//        return responseList;
-//    }
 
 }
