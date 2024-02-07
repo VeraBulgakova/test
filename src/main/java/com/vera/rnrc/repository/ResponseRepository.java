@@ -65,6 +65,16 @@ public interface ResponseRepository extends JpaRepository<ResponseEntity, Long> 
     @Query(value = "truncate table response;", nativeQuery = true)
     void cleanResultTable();
 
+    @Modifying
+    @Transactional
+    @Query(value = "truncate table legal_person;", nativeQuery = true)
+    void cleanLegalPersonTable();
+
+    @Modifying
+    @Transactional
+    @Query(value = "truncate table physical_person;", nativeQuery = true)
+    void cleanPhysicPersonTable();
+
     @Query(value = "select iop.id                     as partner_id, " +
             "       CASE iop.linkedstructuretype " +
             "           WHEN 'Beneficiary' THEN 'Бенефициар' " +

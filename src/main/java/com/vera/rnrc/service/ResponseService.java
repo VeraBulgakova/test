@@ -49,7 +49,7 @@ public class ResponseService {
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
                 "    p.date_of_birth = iop.dateofbirth " +
-                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
+//                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
                 "        AND LOWER(p.surname) = LOWER(iop.lastname) AND LOWER(p.name) = LOWER(iop.firstname) " +
                 "        AND LOWER(p.patronymic) = LOWER(iop.middlename) " +
                 "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
@@ -59,7 +59,7 @@ public class ResponseService {
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
                 "    p.date_of_birth = iop.dateofbirth " +
-                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
+//                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
                 "        AND LOWER(p.full_name) = LOWER(iop.fullname) " +
                 "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
                 "        AND p.date_list = '" + dateList.replace("'", "''") + "' ;";
@@ -96,7 +96,8 @@ public class ResponseService {
     public List<ResponseDTO> getCheckResponseForAllUsers(QlikViewRequest request, LocalDate checkDate) {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-        createViewForPhysicPerson(date, "Террор");
+        createViewForPhysicPerson(date, request.getRfmList().getListName());
+        createViewForLegalPerson(date, request.getRfmList().getListName());
         responseRepository.insertResponseRecordsFromTable();
         List<ResponseEntity> matchingRecords = responseRepository.findAllResponses();
 
@@ -116,6 +117,8 @@ public class ResponseService {
             return responseDTO;
         }).collect(Collectors.toList());
         responseRepository.cleanResultTable();
+        responseRepository.cleanLegalPersonTable();
+        responseRepository.cleanPhysicPersonTable();
         return responseList;
     }
 

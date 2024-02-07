@@ -62,17 +62,12 @@ public class ROMUService {
         entity.setSurname(individual.getFirstName());
         entity.setName(null);
         entity.setPatronymic(null);
-        entity.setDateOfBirth(null);
         IndividualDateOfBirthDTO dateOfBirthDTO = individual.getDateOfBirth();
-
         if (dateOfBirthDTO != null && dateOfBirthDTO.getDate() != null) {
-            // Если dateOfBirthDTO и поле 'date' внутри него существуют, используйте это значение
-            entity.setDateOfBirth(dateOfBirthDTO.getDate());
+            entity.setDateOfBirth(dateOfBirthDTO.getDate().replace("-", ""));
         } else {
-            // Если dateOfBirthDTO или поле 'date' внутри него отсутствуют, установите null для соответствующего поля в entity
             entity.setDateOfBirth(null);
         }
-
         entity.setPlaceOfBirth(null);
         entity.setResidentSign(null);
 

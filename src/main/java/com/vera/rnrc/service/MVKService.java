@@ -78,7 +78,6 @@ public class MVKService {
         } else {
             entity.setDateOfBirth(null);
         }
-        entity.setDateOfBirth(physicalPerson.getDateOfBirth().replaceAll("-", ""));
         entity.setPlaceOfBirth(physicalPerson.getPlaceOfBirth());
         entity.setResidentSign(getResidentSign(subject.getSubjectType().getSubjectTypeId()));
         return entity;
