@@ -1,9 +1,9 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.romu.ROMUPerechen;
 import com.vera.rnrc.dto.romu.EntityDTO;
 import com.vera.rnrc.dto.romu.IndividualDTO;
 import com.vera.rnrc.dto.romu.IndividualDateOfBirthDTO;
+import com.vera.rnrc.dto.romu.ROMUPerechen;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
@@ -52,24 +52,16 @@ public class ROMUService {
     public PhysicalPersonEntity convertToPhysicalPersonList(IndividualDTO individual, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
 
-        entity.setPassportSeries(null);
         entity.setPassportNumber(individual.getDocument().getNumber());
         entity.setId(String.valueOf(individual.getDataId()));
         entity.setListName(listName);
         entity.setDateList(fileName);
-        entity.setInn(null);
         entity.setFullName(individual.getFullName());
         entity.setSurname(individual.getFirstName());
-        entity.setName(null);
-        entity.setPatronymic(null);
         IndividualDateOfBirthDTO dateOfBirthDTO = individual.getDateOfBirth();
         if (dateOfBirthDTO != null && dateOfBirthDTO.getDate() != null) {
             entity.setDateOfBirth(dateOfBirthDTO.getDate().replace("-", ""));
-        } else {
-            entity.setDateOfBirth(null);
         }
-        entity.setPlaceOfBirth(null);
-
         return entity;
     }
 
@@ -79,8 +71,6 @@ public class ROMUService {
         entity.setId(String.valueOf(entityDTO.getDataId()));
         entity.setDateList(fileName);
         entity.setListName(listName);
-        entity.setInn(null);
-        entity.setOgrn(null);
         entity.setOrganizationName(entityDTO.getFirstName());
 
         return entity;

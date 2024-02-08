@@ -33,8 +33,6 @@ public interface PerechenService {
         entity.setPatronymic(physicalPerson.getPatronymic());
         if (physicalPerson.getDateOfBirth() != null) {
             entity.setDateOfBirth(physicalPerson.getDateOfBirth().replaceAll("-", ""));
-        } else {
-            entity.setDateOfBirth(null);
         }
         entity.setPlaceOfBirth(physicalPerson.getPlaceOfBirth());
         return entity;
@@ -61,6 +59,5 @@ public interface PerechenService {
                 .filter(Objects::nonNull)
                 .max(Comparator.comparing(Document::getDateOfIssue, Comparator.nullsLast(Comparator.naturalOrder())))
                 .orElse(null);
-
     }
 }

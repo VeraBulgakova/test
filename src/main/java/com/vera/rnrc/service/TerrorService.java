@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,14 +28,17 @@ public class TerrorService implements PerechenService {
     @Transactional
     public void saveAll(TERRORPerechen jaxbObject, String finalFileName, String type) {
         List<Subject> subjectsList = jaxbObject.getActualPerechen().getSubjects();
-        List<PhysicalPersonEntity> physicalPersonEntities = subjectsList.stream()
-                .filter(subject -> subject.getSubjectType().getName().contains("Физическое лицо"))
-                .map(subject -> convertToPhysicalPersonList(subject, finalFileName, type))
-                .toList();
-        List<LegalPersonEntity> legalPersonEntities = subjectsList.stream()
-                .filter(subject -> subject.getSubjectType().getName().contains("Юридическое лицо"))
-                .map(subject -> convertToLegalEntityList(subject, finalFileName, type))
-                .toList();
+
+        List<PhysicalPersonEntity> physicalPersonEntities = new ArrayList<>();
+        List<LegalPersonEntity> legalPersonEntities = new ArrayList<>();
+
+        for (Subject subject : subjectsList) {
+            if (subject.getSubjectType().getName().contains("Физическое лицо")) {
+                physicalPersonEntities.add(convertToPhysicalPersonList(subject, finalFileName, type));
+            } else if (subject.getSubjectType().getName().contains("Юридическое лицо")) {
+                legalPersonEntities.add(convertToLegalEntityList(subject, finalFileName, type));
+            }
+        }
 
         legalPersonRepository.saveAll(legalPersonEntities);
         physicalPersonRepository.saveAll(physicalPersonEntities);

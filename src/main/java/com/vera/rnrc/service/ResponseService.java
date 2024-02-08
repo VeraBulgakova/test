@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,8 +96,8 @@ public class ResponseService {
     public List<ResponseDTO> getCheckResponseForAllUsers(QlikViewRequest request, LocalDate checkDate) {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-        createViewForPhysicPerson(date, request.getRfmList().getListName());
-        createViewForLegalPerson(date, request.getRfmList().getListName());
+        createViewForPhysicPerson(date, request.getPerchenList().getListName());
+        createViewForLegalPerson(date, request.getPerchenList().getListName());
         responseRepository.insertResponseRecordsFromTable();
         List<ResponseEntity> matchingRecords;
         if (request.isAllPartners()) {
@@ -117,7 +116,7 @@ public class ResponseService {
             responseDTO.setShortName(record.getShortName());
             responseDTO.setCheckDate(dateNow);
             responseDTO.setListDate(date);
-            responseDTO.setListName(request.getRfmList().getListFullName());
+            responseDTO.setListName(request.getPerchenList().getListFullName());
             responseDTO.setCheckResult(record.getCheckResult() + date);
             responseDTO.setListId(record.getListId());
             return responseDTO;

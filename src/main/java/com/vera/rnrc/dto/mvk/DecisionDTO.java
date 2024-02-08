@@ -1,14 +1,14 @@
 package com.vera.rnrc.dto.mvk;
 
 import lombok.Data;
-import javax.xml.bind.annotation.*;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class DecisionDTO {
-
-    @XmlElement(name = "ТипРешения")
-    private DecisionType decisionType;
 
     @XmlElement(name = "НомерРешения")
     private String decisionNumber;
@@ -18,9 +18,6 @@ public class DecisionDTO {
 
     @XmlElement(name = "Орган")
     private String organ;
-
-    @XmlElement(name = "ВидРешения")
-    private DecisionKind decisionKind;
 
     @XmlElement(name = "СписокСубъектов")
     private SubjectList subjectList;

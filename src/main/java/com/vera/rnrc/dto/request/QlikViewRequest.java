@@ -22,7 +22,7 @@ public class QlikViewRequest {
     private String partnerId;
 
     @XmlElement(name = "rfmlist")
-    private RFMList rfmList;
+    private PerchenList perchenList;
 
 }
 
