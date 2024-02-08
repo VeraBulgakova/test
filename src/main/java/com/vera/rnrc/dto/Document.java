@@ -1,4 +1,4 @@
-package com.vera.rnrc.dto.terror;
+package com.vera.rnrc.dto;
 
 import lombok.Data;
 
@@ -9,9 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 public class Document {
-    @XmlElement(name = "ТипДокумента")
-    private DocumentType documentType;
-
     @XmlElement(name = "Серия")
     private String series;
 

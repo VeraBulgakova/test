@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "СписокРешений")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class MVKDecisionListDTO {
+public class MVKPerechen {
 
     @XmlElement(name = "ВерсияФормата")
     private String versionFormat;

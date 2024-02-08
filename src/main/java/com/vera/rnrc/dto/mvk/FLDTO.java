@@ -10,7 +10,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class FLDTO {
+public class FLDTO {//удалить
     @XmlElement(name = "ФИО")
     private String fullName;
 

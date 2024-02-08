@@ -1,6 +1,6 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.romu.ConsolidatedListDTO;
+import com.vera.rnrc.dto.romu.ROMUPerechen;
 import com.vera.rnrc.dto.romu.EntityDTO;
 import com.vera.rnrc.dto.romu.IndividualDTO;
 import com.vera.rnrc.dto.romu.IndividualDateOfBirthDTO;
@@ -24,7 +24,7 @@ public class ROMUService {
     }
 
     @Transactional
-    public void saveAll(ConsolidatedListDTO jaxbObject, String finalFileName, String type) {
+    public void saveAll(ROMUPerechen jaxbObject, String finalFileName, String type) {
 
         List<IndividualDTO> physicalPersonList = jaxbObject.getIndividuals().getIndividual();
 
@@ -69,7 +69,6 @@ public class ROMUService {
             entity.setDateOfBirth(null);
         }
         entity.setPlaceOfBirth(null);
-        entity.setResidentSign(null);
 
         return entity;
     }
@@ -83,7 +82,6 @@ public class ROMUService {
         entity.setInn(null);
         entity.setOgrn(null);
         entity.setOrganizationName(entityDTO.getFirstName());
-        entity.setResidentSign(null);
 
         return entity;
     }

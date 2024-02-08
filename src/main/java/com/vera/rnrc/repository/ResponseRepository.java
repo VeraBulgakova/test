@@ -75,36 +75,7 @@ public interface ResponseRepository extends JpaRepository<ResponseEntity, Long> 
     @Query(value = "truncate table physical_person;", nativeQuery = true)
     void cleanPhysicPersonTable();
 
-    @Query(value = "select iop.id                     as partner_id, " +
-            "       CASE iop.linkedstructuretype " +
-            "           WHEN 'Beneficiary' THEN 'Бенефициар' " +
-            "           WHEN 'BenefitHolder' THEN 'Выгодоприобретатель' " +
-            "           WHEN 'ManagementBody' THEN 'Управляющий орган' " +
-            "           WHEN 'Representative' THEN 'Представитель' " +
-            "           ELSE 'Контрагент' " +
-            "           END                    as check_object, " +
-            "       max(CASE " +
-            "               WHEN iop.linkedstructuretype = 'ManagementBody' THEN iop.managementbodyordernumber " +
-            "               ELSE iop.participantordernumber " +
-            "           END)                   as linked_structure_order, " +
-            "       iop.participantordernumber as participant_order, " +
-            "       max(CASE " +
-            "               WHEN CHAR_LENGTH(TRIM(CONCAT(iop.lastname, ' ', iop.firstname, ' ', iop.middlename))) < 2 " +
-            "                   THEN SPLIT_PART(fullname, ', ', 2) " +
-            "               ELSE TRIM(CONCAT(iop.lastname, ' ', iop.firstname, ' ', iop.middlename)) " +
-            "           END)                   as short_name, " +
-            "       max(CASE " +
-            "               WHEN v.id is not null " +
-            "                   THEN CONCAT('Идентифицирован по перечню от ') " +
-            "               ELSE CONCAT('Не идентифицирован по перечню от ') " +
-            "           END)                   as check_result, " +
-            "       max(v.id)                  as list_id " +
-            "FROM index_olr_partnerlinkedstructure iop " +
-            "         left join viewPhysical v on v.partner_id = iop.pzinskey " +
-            "group by iop.id, iop.participantordernumber, iop.managementbodyordernumber, iop.linkedstructuretype;", nativeQuery = true)
-    List<ResponseEntity> findPhisicalPersonResult(@RequestParam("partnerId") String partnerId);
 
-    @Query(value = "select * from response;", nativeQuery = true)
-    List<ResponseEntity> findAllResponses();
+    List<ResponseEntity> findAllByPartnerId(@RequestParam("partnerId") String partnerId);
 
 }

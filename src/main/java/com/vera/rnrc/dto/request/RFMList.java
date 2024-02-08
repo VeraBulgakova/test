@@ -26,13 +26,13 @@ public class RFMList {
         if (terroristList) {
             return "Террор";
         } else if (fromList) {
-            return "ФРОМ";
+            return "РОМУ";
         } else if (mvkList) {
             return "МВК";
         } else if (romList) {
             return "РОМУ";
         }
-        return null; // или возвращать пустую строку или другое значение по умолчанию
+        return null;
     }
 
     public String getListFullName() {
@@ -40,12 +40,12 @@ public class RFMList {
             return "Перечень лиц, причастных к экстремизму, терроризму";
         } else if (fromList) {
             return "Перечень лиц, причастных к терроризму и РОМУ";
-        } else if (mvkList) {
-            return "Перечень МВК";
         } else if (romList) {
             return "Перечень лиц, причастных к терроризму и РОМУ";
+        } else if (mvkList) {
+            return "Перечень МВК";
         }
-        return null; // или возвращать пустую строку или другое значение по умолчанию
+        return null;
     }
 
 }

@@ -27,6 +27,3 @@ databaseChangeLog:
               - column:
                   name: organization_name
                   type: varchar(255)
-              - column:
-                  name: resident_sign
-                  type: varchar(255)

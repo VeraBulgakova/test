@@ -1,5 +1,6 @@
 package com.vera.rnrc.dto.terror;
 
+import com.vera.rnrc.dto.Subject;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;

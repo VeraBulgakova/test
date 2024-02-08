@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,8 +100,13 @@ public class ResponseService {
         createViewForPhysicPerson(date, request.getRfmList().getListName());
         createViewForLegalPerson(date, request.getRfmList().getListName());
         responseRepository.insertResponseRecordsFromTable();
-        List<ResponseEntity> matchingRecords = responseRepository.findAllResponses();
+        List<ResponseEntity> matchingRecords;
+        if (request.isAllPartners()) {
+            matchingRecords = responseRepository.findAll();
 
+        } else {
+            matchingRecords = responseRepository.findAllByPartnerId(request.getPartnerId());
+        }
         List<ResponseDTO> responseList = matchingRecords.stream().map(record -> {
             ResponseDTO responseDTO = new ResponseDTO();
             responseDTO.setRequestId(request.getRequestId());

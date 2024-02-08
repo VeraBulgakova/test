@@ -29,6 +29,4 @@ public class LegalPersonEntity {
     @Column(name = "organization_name")
     private String organizationName;
 
-    @Column(name = "resident_sign")
-    private String residentSign;
 }

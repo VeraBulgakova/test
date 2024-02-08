@@ -45,6 +45,3 @@ databaseChangeLog:
               - column:
                   name: place_of_birth
                   type: varchar(255)
-              - column:
-                  name: resident_sign
-                  type: varchar(255)

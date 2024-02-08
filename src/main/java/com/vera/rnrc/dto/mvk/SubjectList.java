@@ -1,5 +1,6 @@
 package com.vera.rnrc.dto.mvk;
 
+import com.vera.rnrc.dto.Subject;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,5 +12,5 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SubjectList {
     @XmlElement(name = "Субъект")
-    private List<SubjectDTO> subjects;
+    private List<Subject> subjects;
 }

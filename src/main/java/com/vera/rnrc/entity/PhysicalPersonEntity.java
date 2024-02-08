@@ -47,7 +47,4 @@ public class PhysicalPersonEntity {
     @Column(name = "place_of_birth")
     private String placeOfBirth;
 
-    @Column(name = "resident_sign")
-    private String residentSign;
-
 }

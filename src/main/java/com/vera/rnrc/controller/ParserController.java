@@ -1,10 +1,10 @@
 package com.vera.rnrc.controller;
 
-import com.vera.rnrc.dto.mvk.MVKDecisionListDTO;
+import com.vera.rnrc.dto.mvk.MVKPerechen;
 import com.vera.rnrc.dto.request.QlikViewRequest;
 import com.vera.rnrc.dto.response.ResponseDTO;
-import com.vera.rnrc.dto.romu.ConsolidatedListDTO;
-import com.vera.rnrc.dto.terror.Perechen;
+import com.vera.rnrc.dto.romu.ROMUPerechen;
+import com.vera.rnrc.dto.terror.TERRORPerechen;
 import com.vera.rnrc.service.MVKService;
 import com.vera.rnrc.service.ROMUService;
 import com.vera.rnrc.service.ResponseService;
@@ -72,16 +72,16 @@ public class ParserController {
         try {
             switch (type) {
                 case "Террор":
-                    Perechen perechen = processXmlFile(file, Perechen.class, true);
-                    terrorService.saveAll(perechen, fileName, type);
+                    TERRORPerechen terrorPerechen = processXmlFile(file, TERRORPerechen.class, true);
+                    terrorService.saveAll(terrorPerechen, fileName, type);
                     break;
                 case "МВК":
-                    MVKDecisionListDTO MVKDecisionList = processXmlFile(file, MVKDecisionListDTO.class, false);
+                    MVKPerechen MVKDecisionList = processXmlFile(file, MVKPerechen.class, false);
                     mvkService.saveAll(MVKDecisionList, fileName, type);
                     break;
                 case "РОМУ":
-                    ConsolidatedListDTO consolidatedListDTO = processXmlFile(file, ConsolidatedListDTO.class, true);
-                    romuService.saveAll(consolidatedListDTO, fileName, type);
+                    ROMUPerechen ROMUPerechen = processXmlFile(file, ROMUPerechen.class, true);
+                    romuService.saveAll(ROMUPerechen, fileName, type);
                     break;
                 default:
                     return ResponseEntity.badRequest().body("Неизвестный тип файла");
