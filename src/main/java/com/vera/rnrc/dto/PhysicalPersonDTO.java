@@ -10,7 +10,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class PhysicalPerson {
+public class PhysicalPersonDTO {
     @XmlElement(name = "ФИО")
     private String fullName;
 
@@ -18,16 +18,16 @@ public class PhysicalPerson {
     private String fullNameLat;
 
     @XmlElement(name = "Фамилия")
-    private String surname;
+    private String lastname;
 
     @XmlElement(name = "Имя")
-    private String name;
+    private String firstname;
 
     @XmlElement(name = "Отчество")
-    private String patronymic;
+    private String middlename;
 
     @XmlElement(name = "ДатаРождения")
-    private String DateOfBirth;
+    private String dateOfBirth;
 
     @XmlElement(name = "ГодРождения")
     private int yearOfBirth;
@@ -38,10 +38,7 @@ public class PhysicalPerson {
     @XmlElement(name = "ИНН")
     private String INN;
 
-    @XmlElement(name = "СНИЛС")
-    private String snils;
-
     @XmlElementWrapper(name = "СписокДокументов")
     @XmlElement(name = "Документ")
-    private List<Document> documentList;
+    private List<DocumentDTO> documentDTOList;
 }

@@ -20,5 +20,5 @@ public class DecisionDTO {
     private String organ;
 
     @XmlElement(name = "СписокСубъектов")
-    private SubjectList subjectList;
+    private SubjectListDTO subjectListDTO;
 }

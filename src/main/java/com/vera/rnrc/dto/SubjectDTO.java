@@ -9,19 +9,19 @@ import javax.xml.bind.annotation.XmlElements;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class Subject {
+public class SubjectDTO {
     @XmlElement(name = "ИдСубъекта")
-    private long subjectId;
+    private String subjectId;
 
     @XmlElement(name = "ТипСубъекта")
-    private SubjectType subjectType;
+    private SubjectTypeDTO subjectTypeDTO;
 
     @XmlElement(name = "ФЛ")
-    private PhysicalPerson physicalPerson;
+    private PhysicalPersonDTO physicalPersonDTO;
 
     @XmlElements({
-            @XmlElement(name = "ЮЛ", type = LegalEntity.class),
-            @XmlElement(name = "Орг", type = LegalEntity.class)
+            @XmlElement(name = "ЮЛ", type = LegalEntityDTO.class),
+            @XmlElement(name = "Орг", type = LegalEntityDTO.class)
     })
-    private LegalEntity legalEntity;
+    private LegalEntityDTO legalEntityDTO;
 }

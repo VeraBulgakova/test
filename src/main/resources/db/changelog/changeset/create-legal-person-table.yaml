@@ -13,10 +13,10 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_legal_person
               - column:
-                  name: date_list
+                  name: datelist
                   type: varchar(255)
               - column:
-                  name: list_name
+                  name: listname
                   type: varchar(255)
               - column:
                   name: ogrn
@@ -25,5 +25,5 @@ databaseChangeLog:
                   name: inn
                   type: varchar(255)
               - column:
-                  name: organization_name
+                  name: fullname
                   type: varchar(255)

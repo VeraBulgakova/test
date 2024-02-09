@@ -13,35 +13,35 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_physical_person
               - column:
-                  name: date_list
+                  name: datelist
                   type: varchar(255)
               - column:
-                  name: list_name
+                  name: listname
                   type: varchar(255)
               - column:
                   name: inn
                   type: varchar(255)
               - column:
-                  name: passport_series
+                  name: docseries
                   type: varchar(255)
               - column:
-                  name: passport_number
+                  name: docnumber
                   type: varchar(255)
               - column:
-                  name: full_name
+                  name: fullname
                   type: varchar(255)
               - column:
-                  name: surname
+                  name: lastname
                   type: varchar(255)
               - column:
-                  name: name
+                  name: firstname
                   type: varchar(255)
               - column:
-                  name: patronymic
+                  name: middlename
                   type: varchar(255)
               - column:
-                  name: date_of_birth
+                  name: dateofbirth
                   type: varchar(255)
               - column:
-                  name: place_of_birth
+                  name: placeofbirth
                   type: varchar(255)

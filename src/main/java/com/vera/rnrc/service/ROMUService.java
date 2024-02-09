@@ -52,12 +52,12 @@ public class ROMUService {
     public PhysicalPersonEntity convertToPhysicalPersonList(IndividualDTO individual, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
 
-        entity.setPassportNumber(individual.getDocument().getNumber());
+        entity.setDocNumber(individual.getDocument().getNumber());
         entity.setId(String.valueOf(individual.getDataId()));
         entity.setListName(listName);
         entity.setDateList(fileName);
-        entity.setFullName(individual.getFullName());
-        entity.setSurname(individual.getFirstName());
+        entity.setFullname(individual.getFullName());
+        entity.setFirstname(individual.getFirstName());
         IndividualDateOfBirthDTO dateOfBirthDTO = individual.getDateOfBirth();
         if (dateOfBirthDTO != null && dateOfBirthDTO.getDate() != null) {
             entity.setDateOfBirth(dateOfBirthDTO.getDate().replace("-", ""));
@@ -71,7 +71,7 @@ public class ROMUService {
         entity.setId(String.valueOf(entityDTO.getDataId()));
         entity.setDateList(fileName);
         entity.setListName(listName);
-        entity.setOrganizationName(entityDTO.getFirstName());
+        entity.setFullname(entityDTO.getFirstName());
 
         return entity;
     }

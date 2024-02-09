@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class Document {
+public class DocumentDTO {
     @XmlElement(name = "Серия")
     private String series;
 

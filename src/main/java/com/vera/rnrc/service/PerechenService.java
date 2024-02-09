@@ -1,9 +1,9 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.Document;
-import com.vera.rnrc.dto.LegalEntity;
-import com.vera.rnrc.dto.PhysicalPerson;
-import com.vera.rnrc.dto.Subject;
+import com.vera.rnrc.dto.DocumentDTO;
+import com.vera.rnrc.dto.LegalEntityDTO;
+import com.vera.rnrc.dto.PhysicalPersonDTO;
+import com.vera.rnrc.dto.SubjectDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 
@@ -12,52 +12,52 @@ import java.util.List;
 import java.util.Objects;
 
 public interface PerechenService {
-    default PhysicalPersonEntity convertToPhysicalPersonList(Subject subject, String fileName, String listName) {
+    default PhysicalPersonEntity convertToPhysicalPersonList(SubjectDTO subjectDTO, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
-        PhysicalPerson physicalPerson = subject.getPhysicalPerson();
-        List<Document> documents = physicalPerson.getDocumentList(); // Получение списка документов
-        if (documents == null || documents.isEmpty()) {
-            entity.setPassportSeries(null);
-            entity.setPassportNumber(null);
+        PhysicalPersonDTO physicalPersonDTO = subjectDTO.getPhysicalPersonDTO();
+        List<DocumentDTO> documentsDTO = physicalPersonDTO.getDocumentDTOList();
+        if (documentsDTO == null || documentsDTO.isEmpty()) {
+            entity.setDocNumber(null);
+            entity.setDocSeries(null);
         } else {
-            entity.setPassportSeries(selectLatestDocument(documents).getSeries());
-            entity.setPassportNumber(selectLatestDocument(documents).getNumber());
+            entity.setDocSeries(selectLatestDocument(documentsDTO).getSeries());
+            entity.setDocNumber(selectLatestDocument(documentsDTO).getNumber());
         }
-        entity.setId(String.valueOf(subject.getSubjectId()));
+        entity.setId(String.valueOf(subjectDTO.getSubjectId()));
         entity.setListName(listName);
         entity.setDateList(fileName);
-        entity.setInn(physicalPerson.getINN());
-        entity.setFullName(physicalPerson.getFullName());
-        entity.setSurname(physicalPerson.getSurname());
-        entity.setName(physicalPerson.getName());
-        entity.setPatronymic(physicalPerson.getPatronymic());
-        if (physicalPerson.getDateOfBirth() != null) {
-            entity.setDateOfBirth(physicalPerson.getDateOfBirth().replaceAll("-", ""));
+        entity.setInn(physicalPersonDTO.getINN());
+        entity.setFullname(physicalPersonDTO.getFullName());
+        entity.setLastname(physicalPersonDTO.getLastname());
+        entity.setFirstname(physicalPersonDTO.getFirstname());
+        entity.setMiddlename(physicalPersonDTO.getMiddlename());
+        if (physicalPersonDTO.getDateOfBirth() != null) {
+            entity.setDateOfBirth(physicalPersonDTO.getDateOfBirth().replaceAll("-", ""));
         }
-        entity.setPlaceOfBirth(physicalPerson.getPlaceOfBirth());
+        entity.setPlaceOfBirth(physicalPersonDTO.getPlaceOfBirth());
         return entity;
     }
 
-    default LegalPersonEntity convertToLegalEntityList(Subject subject, String fileName, String listName) {
+    default LegalPersonEntity convertToLegalEntityList(SubjectDTO subjectDTO, String fileName, String listName) {
         LegalPersonEntity entity = new LegalPersonEntity();
-        LegalEntity legalEntity = subject.getLegalEntity();
+        LegalEntityDTO legalEntityDTO = subjectDTO.getLegalEntityDTO();
 
-        entity.setId(String.valueOf(subject.getSubjectId()));
+        entity.setId(subjectDTO.getSubjectId());
         entity.setDateList(fileName);
         entity.setListName(listName);
-        if (legalEntity.getInn() != null) {
-            entity.setInn(legalEntity.getInn());
+        if (legalEntityDTO.getInn() != null) {
+            entity.setInn(legalEntityDTO.getInn());
         }
-        entity.setOgrn(legalEntity.getOgrn());
-        entity.setOrganizationName(legalEntity.getOrganizationName());
+        entity.setOgrn(legalEntityDTO.getOgrn());
+        entity.setFullname(legalEntityDTO.getFullname());
 
         return entity;
     }
 
-    default Document selectLatestDocument(List<Document> documents) {
-        return documents.stream()
+    default DocumentDTO selectLatestDocument(List<DocumentDTO> documentDTOS) {
+        return documentDTOS.stream()
                 .filter(Objects::nonNull)
-                .max(Comparator.comparing(Document::getDateOfIssue, Comparator.nullsLast(Comparator.naturalOrder())))
+                .max(Comparator.comparing(DocumentDTO::getDateOfIssue, Comparator.nullsLast(Comparator.naturalOrder())))
                 .orElse(null);
     }
 }

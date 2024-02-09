@@ -14,37 +14,37 @@ public class PhysicalPersonEntity {
     @Id
     private String id;
 
-    @Column(name = "date_list")
+    @Column(name = "datelist")
     private String dateList;
 
-    @Column(name = "list_name")
+    @Column(name = "listname")
     private String listName;
 
     @Column(name = "inn")
     private String inn;
 
-    @Column(name = "passport_series")
-    private String passportSeries;
+    @Column(name = "docseries")
+    private String docSeries;
 
-    @Column(name = "passport_number")
-    private String passportNumber;
+    @Column(name = "docnumber")
+    private String docNumber;
 
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "fullname")
+    private String fullname;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "lastname")
+    private String lastname;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstname")
+    private String firstname;
 
-    @Column(name = "patronymic")
-    private String patronymic;
+    @Column(name = "middlename")
+    private String middlename;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "dateofbirth")
     private String dateOfBirth;
 
-    @Column(name = "place_of_birth")
+    @Column(name = "placeofbirth")
     private String placeOfBirth;
 
 }

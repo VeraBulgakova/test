@@ -1,6 +1,6 @@
 package com.vera.rnrc.controller;
 
-import com.vera.rnrc.dto.mvk.MVKPerechen;
+import com.vera.rnrc.dto.mvk.MVKPerechenDTO;
 import com.vera.rnrc.dto.request.QlikViewRequest;
 import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.dto.romu.ROMUPerechen;
@@ -76,7 +76,7 @@ public class ParserController {
                     terrorService.saveAll(terrorPerechen, fileName, type);
                     break;
                 case "МВК":
-                    MVKPerechen MVKDecisionList = processXmlFile(file, MVKPerechen.class, false);
+                    MVKPerechenDTO MVKDecisionList = processXmlFile(file, MVKPerechenDTO.class, false);
                     mvkService.saveAll(MVKDecisionList, fileName, type);
                     break;
                 case "РОМУ":

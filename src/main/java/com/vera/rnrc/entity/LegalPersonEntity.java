@@ -14,10 +14,10 @@ public class LegalPersonEntity {
     @Id
     private String id;
 
-    @Column(name = "date_list")
+    @Column(name = "datelist")
     private String dateList;
 
-    @Column(name = "list_name")
+    @Column(name = "listname")
     private String listName;
 
     @Column(name = "ogrn")
@@ -26,7 +26,7 @@ public class LegalPersonEntity {
     @Column(name = "inn")
     private String inn;
 
-    @Column(name = "organization_name")
-    private String organizationName;
+    @Column(name = "fullname")
+    private String fullname;
 
 }

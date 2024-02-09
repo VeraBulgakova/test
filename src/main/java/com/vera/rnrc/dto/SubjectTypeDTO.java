@@ -8,13 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class LegalEntity {
+public class SubjectTypeDTO {
+    @XmlElement(name = "Идентификатор")
+    private long SubjectTypeId;
+
     @XmlElement(name = "Наименование")
-    private String organizationName;
-    @XmlElement(name = "НаименованиеЛат")
-    private String organizationNameLat;
-    @XmlElement(name = "ИНН")
-    private String inn;
-    @XmlElement(name = "ОГРН")
-    private String ogrn;
+    private String name;
 }

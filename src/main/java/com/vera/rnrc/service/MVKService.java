@@ -1,10 +1,10 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.Document;
-import com.vera.rnrc.dto.Subject;
+import com.vera.rnrc.dto.DocumentDTO;
+import com.vera.rnrc.dto.SubjectDTO;
 import com.vera.rnrc.dto.mvk.DecisionDTO;
-import com.vera.rnrc.dto.mvk.MVKPerechen;
-import com.vera.rnrc.dto.mvk.SubjectList;
+import com.vera.rnrc.dto.mvk.MVKPerechenDTO;
+import com.vera.rnrc.dto.mvk.SubjectListDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
@@ -28,11 +28,11 @@ public class MVKService implements PerechenService {
 
 
     @Transactional
-    public void saveAll(MVKPerechen jaxbObject, String finalFileName, String type) {
-        List<Subject> subjectsList = jaxbObject.getActualDecisionsList().getDecisions().stream()
-                .map(DecisionDTO::getSubjectList)
+    public void saveAll(MVKPerechenDTO jaxbObject, String finalFileName, String type) {
+        List<SubjectDTO> subjectsList = jaxbObject.getActualDecisionsListDTO().getDecisions().stream()
+                .map(DecisionDTO::getSubjectListDTO)
                 .filter(Objects::nonNull)
-                .map(SubjectList::getSubjects)
+                .map(SubjectListDTO::getSubjectsDTO)
                 .filter(Objects::nonNull)
                 .flatMap(List::stream)
                 .toList();
@@ -40,11 +40,11 @@ public class MVKService implements PerechenService {
         List<PhysicalPersonEntity> physicalPersonEntities = new ArrayList<>();
         List<LegalPersonEntity> legalPersonEntities = new ArrayList<>();
 
-        for (Subject subject : subjectsList) {
-            if (subject.getSubjectType().getName().contains("Физическое лицо")) {
-                physicalPersonEntities.add(convertToPhysicalPersonList(subject, finalFileName, type));
-            } else if (subject.getSubjectType().getName().contains("Юридическое лицо")) {
-                legalPersonEntities.add(convertToLegalEntityList(subject, finalFileName, type));
+        for (SubjectDTO subjectDTO : subjectsList) {
+            if (subjectDTO.getSubjectTypeDTO().getName().contains("Физическое лицо")) {
+                physicalPersonEntities.add(convertToPhysicalPersonList(subjectDTO, finalFileName, type));
+            } else if (subjectDTO.getSubjectTypeDTO().getName().contains("Юридическое лицо")) {
+                legalPersonEntities.add(convertToLegalEntityList(subjectDTO, finalFileName, type));
             }
         }
 
@@ -53,17 +53,17 @@ public class MVKService implements PerechenService {
     }
 
     @Override
-    public PhysicalPersonEntity convertToPhysicalPersonList(Subject subject, String fileName, String listName) {
-        return PerechenService.super.convertToPhysicalPersonList(subject, fileName, listName);
+    public PhysicalPersonEntity convertToPhysicalPersonList(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToPhysicalPersonList(subjectDTO, fileName, listName);
     }
 
     @Override
-    public LegalPersonEntity convertToLegalEntityList(Subject subject, String fileName, String listName) {
-        return PerechenService.super.convertToLegalEntityList(subject, fileName, listName);
+    public LegalPersonEntity convertToLegalEntityList(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToLegalEntityList(subjectDTO, fileName, listName);
     }
 
     @Override
-    public Document selectLatestDocument(List<Document> documents) {
-        return PerechenService.super.selectLatestDocument(documents);
+    public DocumentDTO selectLatestDocument(List<DocumentDTO> documentDTOS) {
+        return PerechenService.super.selectLatestDocument(documentDTOS);
     }
 }

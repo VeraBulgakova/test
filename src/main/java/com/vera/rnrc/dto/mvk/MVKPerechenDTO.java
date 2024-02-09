@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "СписокРешений")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class MVKPerechen {
+public class MVKPerechenDTO {
 
     @XmlElement(name = "ВерсияФормата")
     private String versionFormat;
@@ -22,5 +22,5 @@ public class MVKPerechen {
     private String datePreviousList;
 
     @XmlElement(name = "СписокАктуальныхРешений")
-    private ActualDecisionsList actualDecisionsList;
+    private ActualDecisionsListDTO actualDecisionsListDTO;
 }

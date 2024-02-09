@@ -1,6 +1,6 @@
 package com.vera.rnrc.dto.terror;
 
-import com.vera.rnrc.dto.Subject;
+import com.vera.rnrc.dto.SubjectDTO;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +12,6 @@ import java.util.List;
 @Data
 public class ActualPerechen {
     @XmlElement(name = "Субъект")
-    private List<Subject> subjects;
+    private List<SubjectDTO> subjectsDTO;
 
 }
