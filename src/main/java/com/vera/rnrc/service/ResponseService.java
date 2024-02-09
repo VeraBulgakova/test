@@ -1,6 +1,6 @@
 package com.vera.rnrc.service;
 
-import com.vera.rnrc.dto.request.QlikViewRequest;
+import com.vera.rnrc.dto.request.RequestDTO;
 import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.entity.ResponseEntity;
 import com.vera.rnrc.repository.ResponseRepository;
@@ -35,34 +35,32 @@ public class ResponseService {
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
                 "    p.inn = iop.inn " +
-                "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND p.date_list = '" + dateList.replace("'", "''") + "' " +
+                "        AND p.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND p.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
                 "SELECT p.id, iop.pzinskey as partner_id " +
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
-                "    p.passport_series = iop.docseries AND p.passport_number = iop.docnumber " +
-                "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND p.date_list = '" + dateList.replace("'", "''") + "' " +
+                "    p.docseries = iop.docseries AND p.docnumber = iop.docnumber " +
+                "        AND p.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND p.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
                 "SELECT p.id, iop.pzinskey as partner_id " +
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
-                "    p.date_of_birth = iop.dateofbirth " +
-//                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
-                "        AND LOWER(p.surname) = LOWER(iop.lastname) AND LOWER(p.name) = LOWER(iop.firstname) " +
-                "        AND LOWER(p.patronymic) = LOWER(iop.middlename) " +
-                "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND p.date_list = '" + dateList.replace("'", "''") + "' " +
+                "    p.dateofbirth = iop.dateofbirth " +
+                "        AND LOWER(p.lastname) = LOWER(iop.lastname) AND LOWER(p.firstname) = LOWER(iop.firstname) " +
+                "        AND LOWER(p.middlename) = LOWER(iop.middlename) " +
+                "        AND p.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND p.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
                 "SELECT p.id, iop.pzinskey as partner_id " +
                 "FROM index_olr_partnerlinkedstructure iop " +
                 "         JOIN physical_person p ON " +
-                "    p.date_of_birth = iop.dateofbirth " +
-//                "        and LOWER(p.place_of_birth) = LOWER(iop.placeofbirth) " +
-                "        AND LOWER(p.full_name) = LOWER(iop.fullname) " +
-                "        AND p.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND p.date_list = '" + dateList.replace("'", "''") + "' ;";
+                "    p.dateofbirth = iop.dateofbirth " +
+                "        AND LOWER(p.fullname) = LOWER(iop.fullname) " +
+                "        AND p.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND p.datelist = '" + dateList.replace("'", "''") + "' ;";
         entityManager.createNativeQuery(sql).executeUpdate();
     }
 
@@ -73,31 +71,31 @@ public class ResponseService {
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
                 "        l.inn = r.inn " +
-                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND l.date_list = '" + dateList.replace("'", "''") + "' " +
+                "        AND l.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND l.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
                 "SELECT l.id, r.id as partner_id " +
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
                 "        l.ogrn = r.ogrn " +
-                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND l.date_list = '" + dateList.replace("'", "''") + "' " +
+                "        AND l.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND l.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
                 "SELECT l.id, r.id as partner_id " +
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
-                "        l.organization_name = r.fullname " +
-                "        AND l.list_name = '" + listName.replace("'", "''") + "' " +
-                "        AND l.date_list = '" + dateList.replace("'", "''") + "' ";
+                "        l.fullname = r.fullname " +
+                "        AND l.listname = '" + listName.replace("'", "''") + "' " +
+                "        AND l.datelist = '" + dateList.replace("'", "''") + "' ";
         entityManager.createNativeQuery(sql).executeUpdate();
     }
 
     @Transactional
-    public List<ResponseDTO> getCheckResponseForAllUsers(QlikViewRequest request, LocalDate checkDate) {
+    public List<ResponseDTO> getCheckResponseForAllUsers(RequestDTO request, LocalDate checkDate) {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-        createViewForPhysicPerson(date, request.getPerchenList().getListName());
-        createViewForLegalPerson(date, request.getPerchenList().getListName());
+        createViewForPhysicPerson(date, request.getPerchenListDTO().getListName());
+        createViewForLegalPerson(date, request.getPerchenListDTO().getListName());
         responseRepository.insertResponseRecordsFromTable();
         List<ResponseEntity> matchingRecords;
         if (request.isAllPartners()) {
@@ -116,7 +114,7 @@ public class ResponseService {
             responseDTO.setShortName(record.getShortName());
             responseDTO.setCheckDate(dateNow);
             responseDTO.setListDate(date);
-            responseDTO.setListName(request.getPerchenList().getListFullName());
+            responseDTO.setListName(request.getPerchenListDTO().getListFullName());
             responseDTO.setCheckResult(record.getCheckResult() + date);
             responseDTO.setListId(record.getListId());
             return responseDTO;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class ActualPerechen {
+public class ActualPerechenDTO {
     @XmlElement(name = "Субъект")
     private List<SubjectDTO> subjectsDTO;
 

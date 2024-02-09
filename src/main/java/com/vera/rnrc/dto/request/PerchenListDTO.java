@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class PerchenList {
+public class PerchenListDTO {
 
     @XmlElement(name = "terroristlist")
     private boolean terroristList;

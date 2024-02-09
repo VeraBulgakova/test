@@ -2,7 +2,7 @@ package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.DocumentDTO;
 import com.vera.rnrc.dto.SubjectDTO;
-import com.vera.rnrc.dto.terror.TERRORPerechen;
+import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
@@ -26,8 +26,8 @@ public class TerrorService implements PerechenService {
     }
 
     @Transactional
-    public void saveAll(TERRORPerechen jaxbObject, String finalFileName, String type) {
-        List<SubjectDTO> subjectsList = jaxbObject.getActualPerechen().getSubjectsDTO();
+    public void saveAll(TERRORPerechenDTO jaxbObject, String finalFileName, String type) {
+        List<SubjectDTO> subjectsList = jaxbObject.getActualPerechenDTO().getSubjectsDTO();
 
         List<PhysicalPersonEntity> physicalPersonEntities = new ArrayList<>();
         List<LegalPersonEntity> legalPersonEntities = new ArrayList<>();

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "QlikViewRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class QlikViewRequest {
+public class RequestDTO {
     @XmlElement(name = "request_id")
     private String requestId;
 
@@ -22,7 +22,7 @@ public class QlikViewRequest {
     private String partnerId;
 
     @XmlElement(name = "rfmlist")
-    private PerchenList perchenList;
+    private PerchenListDTO perchenListDTO;
 
 }
 

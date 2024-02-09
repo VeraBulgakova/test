@@ -1,10 +1,10 @@
 package com.vera.rnrc.controller;
 
 import com.vera.rnrc.dto.mvk.MVKPerechenDTO;
-import com.vera.rnrc.dto.request.QlikViewRequest;
+import com.vera.rnrc.dto.request.RequestDTO;
 import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.dto.romu.ROMUPerechen;
-import com.vera.rnrc.dto.terror.TERRORPerechen;
+import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
 import com.vera.rnrc.service.MVKService;
 import com.vera.rnrc.service.ROMUService;
 import com.vera.rnrc.service.ResponseService;
@@ -52,7 +52,7 @@ public class ParserController {
             return Collections.singletonList(new ResponseDTO());
         }
         try {
-            QlikViewRequest jaxbObject = processXmlFile(file, QlikViewRequest.class, false);
+            RequestDTO jaxbObject = processXmlFile(file, RequestDTO.class, false);
             return service.getCheckResponseForAllUsers(jaxbObject, checkDate);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,8 +72,8 @@ public class ParserController {
         try {
             switch (type) {
                 case "Террор":
-                    TERRORPerechen terrorPerechen = processXmlFile(file, TERRORPerechen.class, true);
-                    terrorService.saveAll(terrorPerechen, fileName, type);
+                    TERRORPerechenDTO terrorPerechenDTO = processXmlFile(file, TERRORPerechenDTO.class, true);
+                    terrorService.saveAll(terrorPerechenDTO, fileName, type);
                     break;
                 case "МВК":
                     MVKPerechenDTO MVKDecisionList = processXmlFile(file, MVKPerechenDTO.class, false);

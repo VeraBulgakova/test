@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Перечень")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class TERRORPerechen {
+public class TERRORPerechenDTO {
     @XmlElement(name = "ВерсияФормата")
     private String version;
 
@@ -21,6 +21,6 @@ public class TERRORPerechen {
     private String datePreviousList;
 
     @XmlElement(name = "АктуальныйПеречень")
-    private ActualPerechen actualPerechen;
+    private ActualPerechenDTO actualPerechenDTO;
 
 }

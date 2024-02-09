@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ROMUService {
+public class ROMUService implements PerechenService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
 
@@ -37,16 +37,8 @@ public class ROMUService {
                 .map(subject -> convertToLegalEntityList(subject, finalFileName, type))
                 .toList();
 
-        saveAllLegalPerson(legalPersonEntities);
-        saveAllPhysicalPersons(physicalPersonEntities);
-    }
-
-    public void saveAllPhysicalPersons(List<PhysicalPersonEntity> physicalPersons) {
-        physicalPersonRepository.saveAll(physicalPersons);
-    }
-
-    public void saveAllLegalPerson(List<LegalPersonEntity> legalPersons) {
-        legalPersonRepository.saveAll(legalPersons);
+        legalPersonRepository.saveAll(legalPersonEntities);
+        physicalPersonRepository.saveAll(physicalPersonEntities);
     }
 
     public PhysicalPersonEntity convertToPhysicalPersonList(IndividualDTO individual, String fileName, String listName) {
@@ -68,7 +60,7 @@ public class ROMUService {
     public LegalPersonEntity convertToLegalEntityList(EntityDTO entityDTO, String fileName, String listName) {
         LegalPersonEntity entity = new LegalPersonEntity();
 
-        entity.setId(String.valueOf(entityDTO.getDataId()));
+        entity.setId(entityDTO.getDataId());
         entity.setDateList(fileName);
         entity.setListName(listName);
         entity.setFullname(entityDTO.getFirstName());

@@ -8,7 +8,7 @@ import java.util.List;
 public class EntityDTO {
 
     @XmlElement(name = "DATAID")
-    private Long dataId;
+    private String dataId;
 
     @XmlElement(name = "VERSIONNUM")
     private Integer versionNum;
