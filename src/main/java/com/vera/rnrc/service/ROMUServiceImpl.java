@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ROMUService implements PerechenService {
+public class ROMUServiceImpl implements PerechenService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
 
-    public ROMUService(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
+    public ROMUServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
         this.physicalPersonRepository = physicalPersonRepository;
         this.legalPersonRepository = legalPersonRepository;
     }
@@ -31,17 +31,17 @@ public class ROMUService implements PerechenService {
         List<EntityDTO> legalPersonList = jaxbObject.getEntities();
 
         List<PhysicalPersonEntity> physicalPersonEntities = physicalPersonList.stream()
-                .map(subject -> convertToPhysicalPersonList(subject, finalFileName, type))
+                .map(subject -> convertToPhysicalPerson(subject, finalFileName, type))
                 .toList();
         List<LegalPersonEntity> legalPersonEntities = legalPersonList.stream()
-                .map(subject -> convertToLegalEntityList(subject, finalFileName, type))
+                .map(subject -> convertToLegalPerson(subject, finalFileName, type))
                 .toList();
 
         legalPersonRepository.saveAll(legalPersonEntities);
         physicalPersonRepository.saveAll(physicalPersonEntities);
     }
 
-    public PhysicalPersonEntity convertToPhysicalPersonList(IndividualDTO individual, String fileName, String listName) {
+    public PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
 
         entity.setDocNumber(individual.getDocument().getNumber());
@@ -57,7 +57,7 @@ public class ROMUService implements PerechenService {
         return entity;
     }
 
-    public LegalPersonEntity convertToLegalEntityList(EntityDTO entityDTO, String fileName, String listName) {
+    public LegalPersonEntity convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
         LegalPersonEntity entity = new LegalPersonEntity();
 
         entity.setId(entityDTO.getDataId());

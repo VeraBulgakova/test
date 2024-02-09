@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public interface PerechenService {
-    default PhysicalPersonEntity convertToPhysicalPersonList(SubjectDTO subjectDTO, String fileName, String listName) {
+    default PhysicalPersonEntity convertToPhysicalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
         PhysicalPersonEntity entity = new PhysicalPersonEntity();
         PhysicalPersonDTO physicalPersonDTO = subjectDTO.getPhysicalPersonDTO();
         List<DocumentDTO> documentsDTO = physicalPersonDTO.getDocumentDTOList();
@@ -38,7 +38,7 @@ public interface PerechenService {
         return entity;
     }
 
-    default LegalPersonEntity convertToLegalEntityList(SubjectDTO subjectDTO, String fileName, String listName) {
+    default LegalPersonEntity convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
         LegalPersonEntity entity = new LegalPersonEntity();
         LegalEntityDTO legalEntityDTO = subjectDTO.getLegalEntityDTO();
 

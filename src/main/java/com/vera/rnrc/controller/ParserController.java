@@ -5,10 +5,7 @@ import com.vera.rnrc.dto.request.RequestDTO;
 import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.dto.romu.ROMUPerechen;
 import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
-import com.vera.rnrc.service.MVKService;
-import com.vera.rnrc.service.ROMUService;
-import com.vera.rnrc.service.ResponseService;
-import com.vera.rnrc.service.TerrorService;
+import com.vera.rnrc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -33,27 +30,27 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class ParserController {
-    private final ResponseService service;
-    private final TerrorService terrorService;
-    private final MVKService mvkService;
-    private final ROMUService romuService;
+    private final ResponseService responseService;
+    private final TerrorServiceImpl terrorServiceImpl;
+    private final MVKServiceImpl mvkServiceImpl;
+    private final ROMUServiceImpl romuServiceImpl;
 
     @Autowired
-    public ParserController(ResponseService service, TerrorService terrorService, MVKService mvkService, ROMUService romuService) {
-        this.service = service;
-        this.terrorService = terrorService;
-        this.mvkService = mvkService;
-        this.romuService = romuService;
+    public ParserController(ResponseServiceImpl responseService, TerrorServiceImpl terrorServiceImpl, MVKServiceImpl mvkServiceImpl, ROMUServiceImpl romuServiceImpl) {
+        this.responseService = responseService;
+        this.terrorServiceImpl = terrorServiceImpl;
+        this.mvkServiceImpl = mvkServiceImpl;
+        this.romuServiceImpl = romuServiceImpl;
     }
 
-    @PostMapping("/checkAllUsers")
-    public List<ResponseDTO> checkAllUsers(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
+    @PostMapping("/checkPartners")
+    public List<ResponseDTO> checkPartners(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
         if (file.isEmpty()) {
             return Collections.singletonList(new ResponseDTO());
         }
         try {
             RequestDTO jaxbObject = processXmlFile(file, RequestDTO.class, false);
-            return service.getCheckResponseForAllUsers(jaxbObject, checkDate);
+            return responseService.getCheckResponseForPartners(jaxbObject, checkDate);
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.singletonList(new ResponseDTO());
@@ -73,15 +70,15 @@ public class ParserController {
             switch (type) {
                 case "Террор":
                     TERRORPerechenDTO terrorPerechenDTO = processXmlFile(file, TERRORPerechenDTO.class, true);
-                    terrorService.saveAll(terrorPerechenDTO, fileName, type);
+                    terrorServiceImpl.saveAll(terrorPerechenDTO, fileName, type);
                     break;
                 case "МВК":
                     MVKPerechenDTO MVKDecisionList = processXmlFile(file, MVKPerechenDTO.class, false);
-                    mvkService.saveAll(MVKDecisionList, fileName, type);
+                    mvkServiceImpl.saveAll(MVKDecisionList, fileName, type);
                     break;
                 case "РОМУ":
                     ROMUPerechen ROMUPerechen = processXmlFile(file, ROMUPerechen.class, true);
-                    romuService.saveAll(ROMUPerechen, fileName, type);
+                    romuServiceImpl.saveAll(ROMUPerechen, fileName, type);
                     break;
                 default:
                     return ResponseEntity.badRequest().body("Неизвестный тип файла");

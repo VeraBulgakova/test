@@ -9,7 +9,6 @@ import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,17 +16,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class MVKService implements PerechenService {
+public class MVKServiceImpl implements PerechenService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
 
-    public MVKService(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
+    public MVKServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
         this.physicalPersonRepository = physicalPersonRepository;
         this.legalPersonRepository = legalPersonRepository;
     }
 
 
-    @Transactional
     public void saveAll(MVKPerechenDTO jaxbObject, String finalFileName, String type) {
         List<SubjectDTO> subjectsList = jaxbObject.getActualDecisionsListDTO().getDecisions().stream()
                 .map(DecisionDTO::getSubjectListDTO)
@@ -42,9 +40,9 @@ public class MVKService implements PerechenService {
 
         for (SubjectDTO subjectDTO : subjectsList) {
             if (subjectDTO.getSubjectTypeDTO().getName().contains("Физическое лицо")) {
-                physicalPersonEntities.add(convertToPhysicalPersonList(subjectDTO, finalFileName, type));
+                physicalPersonEntities.add(convertToPhysicalPerson(subjectDTO, finalFileName, type));
             } else if (subjectDTO.getSubjectTypeDTO().getName().contains("Юридическое лицо")) {
-                legalPersonEntities.add(convertToLegalEntityList(subjectDTO, finalFileName, type));
+                legalPersonEntities.add(convertToLegalPerson(subjectDTO, finalFileName, type));
             }
         }
 
@@ -53,13 +51,13 @@ public class MVKService implements PerechenService {
     }
 
     @Override
-    public PhysicalPersonEntity convertToPhysicalPersonList(SubjectDTO subjectDTO, String fileName, String listName) {
-        return PerechenService.super.convertToPhysicalPersonList(subjectDTO, fileName, listName);
+    public PhysicalPersonEntity convertToPhysicalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToPhysicalPerson(subjectDTO, fileName, listName);
     }
 
     @Override
-    public LegalPersonEntity convertToLegalEntityList(SubjectDTO subjectDTO, String fileName, String listName) {
-        return PerechenService.super.convertToLegalEntityList(subjectDTO, fileName, listName);
+    public LegalPersonEntity convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToLegalPerson(subjectDTO, fileName, listName);
     }
 
     @Override

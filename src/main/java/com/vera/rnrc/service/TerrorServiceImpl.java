@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TerrorService implements PerechenService {
+public class TerrorServiceImpl implements PerechenService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
 
     @Autowired
-    public TerrorService(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
+    public TerrorServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
         this.physicalPersonRepository = physicalPersonRepository;
         this.legalPersonRepository = legalPersonRepository;
     }
@@ -34,9 +34,9 @@ public class TerrorService implements PerechenService {
 
         for (SubjectDTO subjectDTO : subjectsList) {
             if (subjectDTO.getSubjectTypeDTO().getName().contains("Физическое лицо")) {
-                physicalPersonEntities.add(convertToPhysicalPersonList(subjectDTO, finalFileName, type));
+                physicalPersonEntities.add(convertToPhysicalPerson(subjectDTO, finalFileName, type));
             } else if (subjectDTO.getSubjectTypeDTO().getName().contains("Юридическое лицо")) {
-                legalPersonEntities.add(convertToLegalEntityList(subjectDTO, finalFileName, type));
+                legalPersonEntities.add(convertToLegalPerson(subjectDTO, finalFileName, type));
             }
         }
 
@@ -45,13 +45,13 @@ public class TerrorService implements PerechenService {
     }
 
     @Override
-    public PhysicalPersonEntity convertToPhysicalPersonList(SubjectDTO subjectDTO, String fileName, String listName) {
-        return PerechenService.super.convertToPhysicalPersonList(subjectDTO, fileName, listName);
+    public PhysicalPersonEntity convertToPhysicalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToPhysicalPerson(subjectDTO, fileName, listName);
     }
 
     @Override
-    public LegalPersonEntity convertToLegalEntityList(SubjectDTO subjectDTO, String fileName, String listName) {
-        return PerechenService.super.convertToLegalEntityList(subjectDTO, fileName, listName);
+    public LegalPersonEntity convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
+        return PerechenService.super.convertToLegalPerson(subjectDTO, fileName, listName);
     }
 
     @Override
