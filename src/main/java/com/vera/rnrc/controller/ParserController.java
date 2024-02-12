@@ -31,16 +31,16 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ParserController {
     private final ResponseService responseService;
-    private final TerrorServiceImpl terrorServiceImpl;
-    private final MVKServiceImpl mvkServiceImpl;
-    private final ROMUServiceImpl romuServiceImpl;
+    private final TerrorService terrorService;
+    private final MVKService mvkService;
+    private final ROMUService romuService;
 
     @Autowired
     public ParserController(ResponseServiceImpl responseService, TerrorServiceImpl terrorServiceImpl, MVKServiceImpl mvkServiceImpl, ROMUServiceImpl romuServiceImpl) {
         this.responseService = responseService;
-        this.terrorServiceImpl = terrorServiceImpl;
-        this.mvkServiceImpl = mvkServiceImpl;
-        this.romuServiceImpl = romuServiceImpl;
+        this.terrorService = terrorServiceImpl;
+        this.mvkService = mvkServiceImpl;
+        this.romuService = romuServiceImpl;
     }
 
     @PostMapping("/checkPartners")
@@ -70,15 +70,15 @@ public class ParserController {
             switch (type) {
                 case "Террор":
                     TERRORPerechenDTO terrorPerechenDTO = processXmlFile(file, TERRORPerechenDTO.class, true);
-                    terrorServiceImpl.saveAll(terrorPerechenDTO, fileName, type);
+                    terrorService.saveAll(terrorPerechenDTO, fileName, type);
                     break;
                 case "МВК":
                     MVKPerechenDTO MVKDecisionList = processXmlFile(file, MVKPerechenDTO.class, false);
-                    mvkServiceImpl.saveAll(MVKDecisionList, fileName, type);
+                    mvkService.saveAll(MVKDecisionList, fileName, type);
                     break;
                 case "РОМУ":
                     ROMUPerechen ROMUPerechen = processXmlFile(file, ROMUPerechen.class, true);
-                    romuServiceImpl.saveAll(ROMUPerechen, fileName, type);
+                    romuService.saveAll(ROMUPerechen, fileName, type);
                     break;
                 default:
                     return ResponseEntity.badRequest().body("Неизвестный тип файла");
