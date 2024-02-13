@@ -49,6 +49,9 @@ public class ParserController {
             return Collections.singletonList(new ResponseDTO());
         }
         try {
+            if (checkDate == null) {
+                checkDate = LocalDate.now();
+            }
             RequestDTO jaxbObject = processXmlFile(file, RequestDTO.class, false);
             return responseService.getCheckResponseForPartners(jaxbObject, checkDate);
         } catch (Exception e) {
