@@ -9,6 +9,8 @@ import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ROMUServiceImpl implements ROMUService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ROMUServiceImpl.class);
 
     public ROMUServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
         this.physicalPersonRepository = physicalPersonRepository;
@@ -38,7 +41,10 @@ public class ROMUServiceImpl implements ROMUService {
                 .toList();
 
         legalPersonRepository.saveAll(legalPersonEntities);
+        logger.info("{} legal persons saved", legalPersonEntities.size());
+
         physicalPersonRepository.saveAll(physicalPersonEntities);
+        logger.info("{} physical persons saved", physicalPersonEntities.size());
     }
 
     public PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {

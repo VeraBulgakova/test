@@ -6,6 +6,8 @@ import com.vera.rnrc.dto.response.ResponseDTO;
 import com.vera.rnrc.dto.romu.ROMUPerechen;
 import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
 import com.vera.rnrc.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class ParserController {
     private final TerrorService terrorService;
     private final MVKService mvkService;
     private final ROMUService romuService;
+    private static final Logger logger = LoggerFactory.getLogger(ParserController.class);
 
     @Autowired
     public ParserController(ResponseServiceImpl responseService, TerrorServiceImpl terrorServiceImpl, MVKServiceImpl mvkServiceImpl, ROMUServiceImpl romuServiceImpl) {
@@ -46,6 +49,7 @@ public class ParserController {
     @PostMapping("/checkPartners")
     public List<ResponseDTO> checkPartners(@RequestParam("file") MultipartFile file, @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate checkDate) throws JAXBException {
         if (file.isEmpty()) {
+            logger.error("Файл не предоставлен");
             return Collections.singletonList(new ResponseDTO());
         }
         try {
@@ -55,7 +59,7 @@ public class ParserController {
             RequestDTO jaxbObject = processXmlFile(file, RequestDTO.class, false);
             return responseService.getCheckResponseForPartners(jaxbObject, checkDate);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Ошибка при обработке файла", e);
             return Collections.singletonList(new ResponseDTO());
         }
     }
@@ -64,6 +68,7 @@ public class ParserController {
     public ResponseEntity<String> uploadXmlFile(@RequestParam("file") MultipartFile file,
                                                 @RequestParam("fileType") String type) {
         if (file.isEmpty()) {
+            logger.error("Файл не предоставлен");
             return ResponseEntity.badRequest().body("Файл не предоставлен");
         }
         String fileName = Optional.ofNullable(file.getOriginalFilename())
@@ -87,7 +92,7 @@ public class ParserController {
                     return ResponseEntity.badRequest().body("Неизвестный тип файла");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Ошибка при обработке файла", e);
             return ResponseEntity.internalServerError().body("Ошибка при обработке файла: " + e.getMessage());
         }
 

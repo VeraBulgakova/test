@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-index-olr-partnerlinkedstructure-table.yaml
   - include:
       file: db/changelog/changeset/create-rnrc-ref-partner-table.yaml
+  - include:
+      file: db/changelog/changeset/create-log-table.yaml

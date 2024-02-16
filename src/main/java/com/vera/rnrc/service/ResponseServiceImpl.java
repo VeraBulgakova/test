@@ -6,6 +6,8 @@ import com.vera.rnrc.entity.ResponseEntity;
 import com.vera.rnrc.repository.ResponseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class ResponseServiceImpl implements ResponseService {
 
     private final ResponseRepository responseRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ResponseServiceImpl.class);
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -63,6 +66,8 @@ public class ResponseServiceImpl implements ResponseService {
                 "        AND p.listname = '" + listName.replace("'", "''") + "' " +
                 "        AND p.datelist = '" + dateList.replace("'", "''") + "' ;";
         entityManager.createNativeQuery(sql).executeUpdate();
+
+        logger.info("View for physical persons created successfully");
     }
 
     @Override
@@ -90,23 +95,32 @@ public class ResponseServiceImpl implements ResponseService {
                 "        AND l.listname = '" + listName.replace("'", "''") + "' " +
                 "        AND l.datelist = '" + dateList.replace("'", "''") + "' ";
         entityManager.createNativeQuery(sql).executeUpdate();
+
+        logger.info("View for legal persons created successfully");
     }
 
     @Override
     @Transactional
     public List<ResponseDTO> getCheckResponseForPartners(RequestDTO request, LocalDate checkDate) {
+        logger.info("Starting getCheckResponseForPartners method...");
+
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+
+        logger.info("Creating views for physical and legal persons...");
         createViewForPhysicPerson(date, request.getPerchenListDTO().getListName());
         createViewForLegalPerson(date, request.getPerchenListDTO().getListName());
+
+        logger.info("Inserting response records from tables...");
         responseRepository.insertResponseRecordsFromTable();
+
         List<ResponseEntity> matchingRecords;
         if (request.isAllPartners()) {
             matchingRecords = responseRepository.findAll();
-
         } else {
             matchingRecords = responseRepository.findAllByPartnerId(request.getPartnerId());
         }
+
         List<ResponseDTO> responseList = matchingRecords.stream().map(record -> {
             ResponseDTO responseDTO = new ResponseDTO();
             responseDTO.setRequestId(request.getRequestId());
@@ -122,9 +136,13 @@ public class ResponseServiceImpl implements ResponseService {
             responseDTO.setListId(record.getListId());
             return responseDTO;
         }).collect(Collectors.toList());
+
+        logger.info("Cleaning result, legal person, and physical person tables...");
         responseRepository.cleanResultTable();
         responseRepository.cleanLegalPersonTable();
         responseRepository.cleanPhysicPersonTable();
+
+        logger.info("getCheckResponseForPartners method completed successfully");
         return responseList;
     }
 

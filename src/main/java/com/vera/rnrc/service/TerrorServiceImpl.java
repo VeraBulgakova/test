@@ -10,6 +10,8 @@ import com.vera.rnrc.entity.PhysicalPersonEntity;
 import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import java.util.Objects;
 public class TerrorServiceImpl implements TerrorService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
+    private static final Logger logger = LoggerFactory.getLogger(TerrorServiceImpl.class);
 
     @Autowired
     public TerrorServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
@@ -45,7 +48,10 @@ public class TerrorServiceImpl implements TerrorService {
         }
 
         legalPersonRepository.saveAll(legalPersonEntities);
+        logger.info("{} legal persons saved", legalPersonEntities.size());
+
         physicalPersonRepository.saveAll(physicalPersonEntities);
+        logger.info("{} physical persons saved", physicalPersonEntities.size());
     }
 
     @Override
