@@ -2,6 +2,7 @@ package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.romu.EntityDTO;
 import com.vera.rnrc.dto.romu.IndividualDTO;
+import com.vera.rnrc.dto.romu.IndividualsDTO;
 import com.vera.rnrc.dto.romu.ROMUPerechenDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,19 +28,40 @@ public class ROMUServiceImpl implements ROMUService {
     @Transactional
     public void saveAll(ROMUPerechenDTO jaxbObject, String finalFileName, String type) {
 
-        List<IndividualDTO> physicalPersonList = jaxbObject.getIndividualsDTO().getIndividual();
+        List<IndividualDTO> physicalPersonList = getIndividualList(jaxbObject);
 
-        List<EntityDTO> legalPersonList = jaxbObject.getEntities();
+        List<EntityDTO> legalPersonList = getEntities(jaxbObject);
 
-        List<PhysicalPersonEntity> physicalPersonEntities = physicalPersonList.stream()
-                .map(subject -> convertToPhysicalPerson(subject, finalFileName, type))
-                .toList();
-        List<LegalPersonEntity> legalPersonEntities = legalPersonList.stream()
-                .map(subject -> convertToLegalPerson(subject, finalFileName, type))
-                .toList();
+        List<PhysicalPersonEntity> physicalPersonEntities = getPhysicalPersonEntityList(finalFileName, type, physicalPersonList);
+        List<LegalPersonEntity> legalPersonEntities = getLegalPersonEntityList(finalFileName, type, legalPersonList);
 
         legalPersonRepository.saveAll(legalPersonEntities);
         physicalPersonRepository.saveAll(physicalPersonEntities);
+    }
+
+    private static List<EntityDTO> getEntities(ROMUPerechenDTO jaxbObject) {
+        return Optional.ofNullable(jaxbObject)
+                .map(ROMUPerechenDTO::getEntities)
+                .orElse(List.of());
+    }
+
+    private static List<IndividualDTO> getIndividualList(ROMUPerechenDTO jaxbObject) {
+        return Optional.ofNullable(jaxbObject)
+                .map(ROMUPerechenDTO::getIndividualsDTO)
+                .map(IndividualsDTO::getIndividual)
+                .orElse(List.of());
+    }
+
+    private List<LegalPersonEntity> getLegalPersonEntityList(String finalFileName, String type, List<EntityDTO> legalPersonList) {
+        return legalPersonList.stream()
+                .map(subject -> convertToLegalPerson(subject, finalFileName, type))
+                .toList();
+    }
+
+    private List<PhysicalPersonEntity> getPhysicalPersonEntityList(String finalFileName, String type, List<IndividualDTO> physicalPersonList) {
+        return physicalPersonList.stream()
+                .map(subject -> convertToPhysicalPerson(subject, finalFileName, type))
+                .toList();
     }
 
     private PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {

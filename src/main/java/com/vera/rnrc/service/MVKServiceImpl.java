@@ -1,6 +1,7 @@
 package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.SubjectDTO;
+import com.vera.rnrc.dto.mvk.ActualDecisionsListDTO;
 import com.vera.rnrc.dto.mvk.DecisionDTO;
 import com.vera.rnrc.dto.mvk.MVKPerechenDTO;
 import com.vera.rnrc.dto.mvk.SubjectListDTO;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +48,10 @@ public class MVKServiceImpl implements MVKService {
     }
 
     private List<SubjectDTO> getSubjectsList(MVKPerechenDTO jaxbObject) {
-        return jaxbObject.getActualDecisionsListDTO().getDecisions().stream()
+        return Optional.ofNullable(jaxbObject.getActualDecisionsListDTO())
+                .map(ActualDecisionsListDTO::getDecisions)
+                .stream()
+                .flatMap(List::stream)
                 .map(DecisionDTO::getSubjectListDTO)
                 .filter(Objects::nonNull)
                 .map(SubjectListDTO::getSubjectsDTO)

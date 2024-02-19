@@ -15,45 +15,58 @@ import java.util.Objects;
 @Component
 public class PhysicalPersonMapper {
     public PhysicalPersonEntity convertToPhysicalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
-        PhysicalPersonEntity entity = new PhysicalPersonEntity();
+        String docNumber = null;
+        String docSeries = null;
+        String dateOfBirth = null;
+
         PhysicalPersonDTO physicalPersonDTO = subjectDTO.getPhysicalPersonDTO();
+
         List<DocumentDTO> documentsDTO = physicalPersonDTO.getDocumentDTOList();
-        if (documentsDTO == null || documentsDTO.isEmpty()) {
-            entity.setDocNumber(null);
-            entity.setDocSeries(null);
-        } else {
-            entity.setDocSeries(selectLatestDocument(documentsDTO).getSeries());
-            entity.setDocNumber(selectLatestDocument(documentsDTO).getNumber());
+
+        if (documentsDTO != null) {
+            docSeries = selectLatestDocument(documentsDTO).getSeries();
+            docNumber = selectLatestDocument(documentsDTO).getNumber();
         }
-        entity.setId(String.valueOf(subjectDTO.getSubjectId()));
-        entity.setListName(listName);
-        entity.setDateList(fileName);
-        entity.setInn(physicalPersonDTO.getINN());
-        entity.setFullname(physicalPersonDTO.getFullName());
-        entity.setLastname(physicalPersonDTO.getLastname());
-        entity.setFirstname(physicalPersonDTO.getFirstname());
-        entity.setMiddlename(physicalPersonDTO.getMiddlename());
+
         if (physicalPersonDTO.getDateOfBirth() != null) {
-            entity.setDateOfBirth(physicalPersonDTO.getDateOfBirth().replaceAll("-", ""));
+            dateOfBirth = physicalPersonDTO.getDateOfBirth().replaceAll("-", "");
         }
-        entity.setPlaceOfBirth(physicalPersonDTO.getPlaceOfBirth());
-        return entity;
+        return new PhysicalPersonEntity(String.valueOf(subjectDTO.getSubjectId()),
+                fileName,
+                listName,
+                physicalPersonDTO.getINN(),
+                docSeries,
+                docNumber,
+                physicalPersonDTO.getFullName(),
+                physicalPersonDTO.getLastname(),
+                physicalPersonDTO.getFirstname(),
+                physicalPersonDTO.getMiddlename(),
+                dateOfBirth,
+                physicalPersonDTO.getPlaceOfBirth());
+
     }
 
     public PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {
-        PhysicalPersonEntity entity = new PhysicalPersonEntity();
-
-        entity.setDocNumber(individual.getDocument().getNumber());
-        entity.setId(String.valueOf(individual.getDataId()));
-        entity.setListName(listName);
-        entity.setDateList(fileName);
-        entity.setFullname(individual.getFullName());
-        entity.setFirstname(individual.getFirstName());
+        String dateOfBirth = null;
         IndividualDateOfBirthDTO dateOfBirthDTO = individual.getDateOfBirth();
         if (dateOfBirthDTO != null && dateOfBirthDTO.getDate() != null) {
-            entity.setDateOfBirth(dateOfBirthDTO.getDate().replace("-", ""));
+            dateOfBirth = dateOfBirthDTO.getDate().replace("-", "");
         }
-        return entity;
+        return new PhysicalPersonEntity(
+                String.valueOf(individual.getDataId()),
+                fileName,
+                listName,
+                null,
+                null,
+                individual.getDocument().getNumber(),
+                individual.getFullName(),
+                null,
+                individual.getFirstName(),
+                null,
+                dateOfBirth,
+                null
+
+        );
     }
 
     private DocumentDTO selectLatestDocument(List<DocumentDTO> documentDTO) {

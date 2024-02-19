@@ -1,6 +1,7 @@
 package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.SubjectDTO;
+import com.vera.rnrc.dto.terror.ActualPerechenDTO;
 import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class TerrorServiceImpl implements TerrorService {
 
     @Transactional
     public void saveAll(TERRORPerechenDTO jaxbObject, String finalFileName, String type) {
-        List<SubjectDTO> subjectsList = jaxbObject.getActualPerechenDTO().getSubjectsDTO();
+        List<SubjectDTO> subjectsList = getSubjectsList(jaxbObject);
 
         List<PhysicalPersonEntity> physicalPersonEntities = new ArrayList<>();
         List<LegalPersonEntity> legalPersonEntities = new ArrayList<>();
@@ -41,6 +43,13 @@ public class TerrorServiceImpl implements TerrorService {
 
         legalPersonRepository.saveAll(legalPersonEntities);
         physicalPersonRepository.saveAll(physicalPersonEntities);
+    }
+
+    private List<SubjectDTO> getSubjectsList(TERRORPerechenDTO jaxbObject) {
+        return Optional.ofNullable(jaxbObject)
+                .map(TERRORPerechenDTO::getActualPerechenDTO)
+                .map(ActualPerechenDTO::getSubjectsDTO)
+                .orElse(List.of());
     }
 
     private PhysicalPersonEntity convertToPhysicalPerson(SubjectDTO subjectDTO, String fileName, String listName) {

@@ -10,28 +10,16 @@ import org.springframework.stereotype.Component;
 public class LegalPersonMapper {
 
     public LegalPersonEntity convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
-        LegalPersonEntity entity = new LegalPersonEntity();
+
         LegalEntityDTO legalEntityDTO = subjectDTO.getLegalEntityDTO();
-
-        entity.setId(subjectDTO.getSubjectId());
-        entity.setDateList(fileName);
-        entity.setListName(listName);
+        String inn = null;
         if (legalEntityDTO.getInn() != null) {
-            entity.setInn(legalEntityDTO.getInn());
+            inn = legalEntityDTO.getInn();
         }
-        entity.setOgrn(legalEntityDTO.getOgrn());
-        entity.setFullname(legalEntityDTO.getFullname());
-
-        return entity;
+        return new LegalPersonEntity(subjectDTO.getSubjectId(), fileName, listName, legalEntityDTO.getOgrn(), inn, legalEntityDTO.getFullname());
     }
-   public LegalPersonEntity convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
-       LegalPersonEntity entity = new LegalPersonEntity();
 
-       entity.setId(entityDTO.getDataId());
-       entity.setDateList(fileName);
-       entity.setListName(listName);
-       entity.setFullname(entityDTO.getFirstName());
-
-       return entity;
-   }
+    public LegalPersonEntity convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
+        return new LegalPersonEntity(entityDTO.getDataId(), fileName, listName, null, null, entityDTO.getFirstName());
+    }
 }

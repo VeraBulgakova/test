@@ -11,20 +11,17 @@ import java.util.stream.Collectors;
 @Component
 public class ResponseMapper {
     public List<ResponseDTO> toResponseDTOList(List<ResponseEntity> matchingRecords, RequestDTO request, String dateNow, String date) {
-        return matchingRecords.stream().map(record -> {
-            ResponseDTO responseDTO = new ResponseDTO();
-            responseDTO.setRequestId(request.getRequestId());
-            responseDTO.setPartnerId(record.getPartnerId());
-            responseDTO.setCheckObject(record.getCheckObject());
-            responseDTO.setLinkedStructureOrder(record.getLinkedStructureOrder());
-            responseDTO.setParticipantOrder(record.getParticipantOrder());
-            responseDTO.setShortName(record.getShortName());
-            responseDTO.setCheckDate(dateNow);
-            responseDTO.setListDate(date);
-            responseDTO.setListName(request.getPerchenListDTO().getListFullName());
-            responseDTO.setCheckResult(record.getCheckResult() + date);
-            responseDTO.setListId(record.getListId());
-            return responseDTO;
-        }).collect(Collectors.toList());
+        return matchingRecords.stream().map(record -> new ResponseDTO(
+                request.getPartnerId(),
+                request.getPartnerId(),
+                record.getCheckObject(),
+                record.getLinkedStructureOrder(),
+                record.getParticipantOrder(),
+                record.getShortName(),
+                dateNow,
+                date,
+                request.getPerchenListDTO().getListFullName(),
+                record.getCheckResult() + date,
+                record.getListId())).collect(Collectors.toList());
     }
 }
