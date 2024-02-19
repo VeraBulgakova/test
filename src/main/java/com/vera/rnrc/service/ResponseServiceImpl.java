@@ -11,6 +11,8 @@ import com.vera.rnrc.repository.ResponseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ public class ResponseServiceImpl implements ResponseService {
     private final ROMUService romuService;
     private final ResponseRepository responseRepository;
     private final ResponseMapper responseMapper;
+    private static final Logger logger = LoggerFactory.getLogger(ResponseServiceImpl.class);
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -88,6 +91,7 @@ public class ResponseServiceImpl implements ResponseService {
     @Override
     public String uploadXmlFile(MultipartFile file, String type) {
         if (file.isEmpty()) {
+            logger.error("File is not provided");
             return "Файл не предоставлен";
         }
         String fileName = Optional.ofNullable(file.getOriginalFilename())
@@ -108,9 +112,11 @@ public class ResponseServiceImpl implements ResponseService {
                     romuService.saveAll(ROMUPerechenDTO, fileName, type);
                     break;
                 default:
+                    logger.warn("Unknown file type");
                     return "Неизвестный тип файла";
             }
         } catch (Exception e) {
+            logger.error("Error while processing file: {}", e.getMessage());
             return "Ошибка при обработке файла: " + e.getMessage();
         }
         return "Файл успешно обработан";
