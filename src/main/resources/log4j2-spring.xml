@@ -1,0 +1,27 @@
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,nnnnnnnnn} %m%n"/>
+        </Console>
+        <File name="File" fileName="output.log" bufferedIO="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,nnnnnnnnn} %m%n"/>
+        </File>
+        <JDBC name="jdbcappender" tableName="logs">
+            <ConnectionFactory class="com.vera.rnrc.config.Log4J2JDBCConnectionFactory" method="getConnection"/>
+            <Column name="user_id" pattern="%x" isUnicode="false"/>
+            <Column name="date" isEventTimestamp="true" isUnicode="false"/>
+            <Column name="logger" pattern="%logger" isUnicode="false"/>
+            <Column name="level" pattern="%level" isUnicode="false"/>
+            <Column name="message" pattern="%m" isUnicode="false"/>
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        <Logger name="jdbc">
+            <AppenderRef ref="jdbcappender"/>
+        </Logger>
+    </Loggers>
+</Configuration>
