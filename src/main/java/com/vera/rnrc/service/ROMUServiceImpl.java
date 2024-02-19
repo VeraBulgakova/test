@@ -2,31 +2,31 @@ package com.vera.rnrc.service;
 
 import com.vera.rnrc.dto.romu.EntityDTO;
 import com.vera.rnrc.dto.romu.IndividualDTO;
-import com.vera.rnrc.dto.romu.IndividualDateOfBirthDTO;
-import com.vera.rnrc.dto.romu.ROMUPerechen;
+import com.vera.rnrc.dto.romu.ROMUPerechenDTO;
 import com.vera.rnrc.entity.LegalPersonEntity;
 import com.vera.rnrc.entity.PhysicalPersonEntity;
+import com.vera.rnrc.mapper.LegalPersonMapper;
+import com.vera.rnrc.mapper.PhysicalPersonMapper;
 import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ROMUServiceImpl implements ROMUService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
-
-    public ROMUServiceImpl(PhysicalPersonRepository physicalPersonRepository, LegalPersonRepository legalPersonRepository) {
-        this.physicalPersonRepository = physicalPersonRepository;
-        this.legalPersonRepository = legalPersonRepository;
-    }
+    private final LegalPersonMapper legalPersonMapper;
+    private final PhysicalPersonMapper physicalPersonMapper;
 
     @Transactional
-    public void saveAll(ROMUPerechen jaxbObject, String finalFileName, String type) {
+    public void saveAll(ROMUPerechenDTO jaxbObject, String finalFileName, String type) {
 
-        List<IndividualDTO> physicalPersonList = jaxbObject.getIndividuals().getIndividual();
+        List<IndividualDTO> physicalPersonList = jaxbObject.getIndividualsDTO().getIndividual();
 
         List<EntityDTO> legalPersonList = jaxbObject.getEntities();
 
@@ -41,31 +41,12 @@ public class ROMUServiceImpl implements ROMUService {
         physicalPersonRepository.saveAll(physicalPersonEntities);
     }
 
-    public PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {
-        PhysicalPersonEntity entity = new PhysicalPersonEntity();
-
-        entity.setDocNumber(individual.getDocument().getNumber());
-        entity.setId(String.valueOf(individual.getDataId()));
-        entity.setListName(listName);
-        entity.setDateList(fileName);
-        entity.setFullname(individual.getFullName());
-        entity.setFirstname(individual.getFirstName());
-        IndividualDateOfBirthDTO dateOfBirthDTO = individual.getDateOfBirth();
-        if (dateOfBirthDTO != null && dateOfBirthDTO.getDate() != null) {
-            entity.setDateOfBirth(dateOfBirthDTO.getDate().replace("-", ""));
-        }
-        return entity;
+    private PhysicalPersonEntity convertToPhysicalPerson(IndividualDTO individual, String fileName, String listName) {
+        return physicalPersonMapper.convertToPhysicalPerson(individual, fileName, listName);
     }
 
-    public LegalPersonEntity convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
-        LegalPersonEntity entity = new LegalPersonEntity();
-
-        entity.setId(entityDTO.getDataId());
-        entity.setDateList(fileName);
-        entity.setListName(listName);
-        entity.setFullname(entityDTO.getFirstName());
-
-        return entity;
+    private LegalPersonEntity convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
+        return legalPersonMapper.convertToLegalPerson(entityDTO, fileName, listName);
     }
 
 }
