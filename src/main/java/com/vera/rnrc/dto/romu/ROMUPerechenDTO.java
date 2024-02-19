@@ -8,10 +8,10 @@ import java.util.List;
 @XmlRootElement(name = "CONSOLIDATED_LIST")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
-public class ROMUPerechen {
+public class ROMUPerechenDTO {
 
     @XmlElement(name = "INDIVIDUALS")
-    private Individuals individuals;
+    private IndividualsDTO individualsDTO;
 
     @XmlElementWrapper(name = "ENTITIES")
     @XmlElement(name = "ENTITY")

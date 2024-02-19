@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Individuals {
+public class IndividualsDTO {
 
     @XmlElement(name = "INDIVIDUAL")
     private List<IndividualDTO> individual;
