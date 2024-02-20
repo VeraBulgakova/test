@@ -12,10 +12,6 @@ import com.vera.rnrc.repository.LegalPersonRepository;
 import com.vera.rnrc.repository.PhysicalPersonRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +24,6 @@ public class ROMUServiceImpl implements ROMUService {
     private final LegalPersonRepository legalPersonRepository;
     private final LegalPersonMapper legalPersonMapper;
     private final PhysicalPersonMapper physicalPersonMapper;
-    private static final Logger logger = LoggerFactory.getLogger(ROMUServiceImpl.class);
 
     @Transactional
     public void saveAll(ROMUPerechenDTO jaxbObject, String finalFileName, String type) {
@@ -41,10 +36,8 @@ public class ROMUServiceImpl implements ROMUService {
         List<LegalPersonEntity> legalPersonEntities = getLegalPersonEntityList(finalFileName, type, legalPersonList);
 
         legalPersonRepository.saveAll(legalPersonEntities);
-        logger.info("{} legal persons saved", legalPersonEntities.size());
 
         physicalPersonRepository.saveAll(physicalPersonEntities);
-        logger.info("{} physical persons saved", physicalPersonEntities.size());
     }
 
     private static List<EntityDTO> getEntities(ROMUPerechenDTO jaxbObject) {

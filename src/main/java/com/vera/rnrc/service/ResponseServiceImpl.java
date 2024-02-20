@@ -11,8 +11,8 @@ import com.vera.rnrc.repository.ResponseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,7 @@ public class ResponseServiceImpl implements ResponseService {
     private final ROMUService romuService;
     private final ResponseRepository responseRepository;
     private final ResponseMapper responseMapper;
-    private static final Logger logger = LoggerFactory.getLogger(ResponseServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger("jdbc");
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -47,8 +47,6 @@ public class ResponseServiceImpl implements ResponseService {
     public void createViewForPhysicPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
         String sql = responseRepository.createViewForPhysicalPerson(dateList, listName);
         entityManager.createNativeQuery(sql).executeUpdate();
-
-        logger.info("View for physical persons created successfully");
     }
 
     @Override
@@ -56,8 +54,6 @@ public class ResponseServiceImpl implements ResponseService {
     public void createViewForLegalPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
         String sql = responseRepository.createViewForLegalPerson(dateList, listName);
         entityManager.createNativeQuery(sql).executeUpdate();
-
-        logger.info("View for legal persons created successfully");
     }
 
     @Override
@@ -69,11 +65,9 @@ public class ResponseServiceImpl implements ResponseService {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
 
-        logger.info("Creating views for physical and legal persons...");
         createViewForPhysicPerson(date, request.getPerchenListDTO().getListName());
         createViewForLegalPerson(date, request.getPerchenListDTO().getListName());
 
-        logger.info("Inserting response records from tables...");
         responseRepository.insertResponseRecordsFromTable();
         List<ResponseEntity> matchingRecords;
         if (request.isAllPartners()) {
@@ -112,7 +106,7 @@ public class ResponseServiceImpl implements ResponseService {
                     romuService.saveAll(ROMUPerechenDTO, fileName, type);
                     break;
                 default:
-                    logger.warn("Unknown file type");
+                    logger.error("Unknown file type");
                     return "Неизвестный тип файла";
             }
         } catch (Exception e) {
@@ -126,12 +120,14 @@ public class ResponseServiceImpl implements ResponseService {
     @Transactional
     public List<ResponseDTO> checkPartners(MultipartFile file, LocalDate checkDate) throws JAXBException {
         if (file.isEmpty()) {
+            logger.error("File is not provided");
             return List.of(new ResponseDTO());
         }
         try {
             RequestDTO jaxbObject = processXmlFile(file, RequestDTO.class, false);
             return getCheckResponseForPartners(jaxbObject, checkDate);
         } catch (Exception e) {
+            logger.error("Error while processing file: {}", e.getMessage());
             return List.of(new ResponseDTO());
         }
     }

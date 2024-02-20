@@ -13,7 +13,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: date
-                  type: date
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
