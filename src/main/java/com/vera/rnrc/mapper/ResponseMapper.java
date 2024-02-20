@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 public class ResponseMapper {
     public List<ResponseDTO> toResponseDTOList(List<ResponseEntity> matchingRecords, RequestDTO request, String dateNow, String date) {
         return matchingRecords.stream().map(record -> new ResponseDTO(
-                request.getPartnerId(),
-                request.getPartnerId(),
+                request.getRequestId(),
+                record.getPartnerId(),
                 record.getCheckObject(),
                 record.getLinkedStructureOrder(),
                 record.getParticipantOrder(),

@@ -72,7 +72,6 @@ public class ResponseServiceImpl implements ResponseService {
         List<ResponseEntity> matchingRecords;
         if (request.isAllPartners()) {
             matchingRecords = responseRepository.findAll();
-
         } else {
             matchingRecords = responseRepository.findAllByPartnerId(request.getPartnerId());
         }

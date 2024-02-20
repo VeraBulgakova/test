@@ -32,7 +32,7 @@ public interface ResponseRepository extends JpaRepository<ResponseEntity, Long> 
                      left JOIN viewLegal l ON r.id = l.partner_id 
             group by r.id, r.partnername 
             union 
-            select iop.id                     as partner_id, 
+            select SUBSTRING(pzinskey FROM '(\\d+)')                     as partner_id, 
                    CASE iop.linkedstructuretype 
                        WHEN 'Beneficiary' THEN 'Бенефициар' 
                        WHEN 'BenefitHolder' THEN 'Выгодоприобретатель' 
@@ -58,7 +58,7 @@ public interface ResponseRepository extends JpaRepository<ResponseEntity, Long> 
                    max(v.id)                  as list_id 
             FROM index_olr_partnerlinkedstructure iop 
                      left join viewPhysical v on v.partner_id = iop.pzinskey 
-            group by iop.id, iop.participantordernumber, iop.managementbodyordernumber, iop.linkedstructuretype ;
+            group by SUBSTRING(pzinskey FROM '(\\d+)'), iop.participantordernumber, iop.managementbodyordernumber, iop.linkedstructuretype ;
             """, nativeQuery = true)
     void insertResponseRecordsFromTable();
 
