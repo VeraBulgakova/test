@@ -8,6 +8,7 @@ import com.vera.rnrc.dto.terror.TERRORPerechenDTO;
 import com.vera.rnrc.entity.ResponseEntity;
 import com.vera.rnrc.mapper.ResponseMapper;
 import com.vera.rnrc.repository.ResponseRepository;
+import com.vera.rnrc.repository.ResponseRepositoryImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -37,23 +38,20 @@ public class ResponseServiceImpl implements ResponseService {
     private final MVKService mvkService;
     private final ROMUService romuService;
     private final ResponseRepository responseRepository;
+    private final ResponseRepositoryImpl responseRepositoryImpl;
     private final ResponseMapper responseMapper;
     private static final Logger logger = LogManager.getLogger("jdbc");
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     @Transactional
     public void createViewForPhysicPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
-        String sql = responseRepository.createViewForPhysicalPerson(dateList, listName);
-        entityManager.createNativeQuery(sql).executeUpdate();
+        responseRepositoryImpl.createViewForPhysicPerson(dateList, listName);
     }
 
     @Override
     @Transactional
     public void createViewForLegalPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
-        String sql = responseRepository.createViewForLegalPerson(dateList, listName);
-        entityManager.createNativeQuery(sql).executeUpdate();
+        responseRepositoryImpl.createViewForLegalPerson(dateList, listName);
     }
 
     @Override
