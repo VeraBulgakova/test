@@ -1,6 +1,5 @@
 package com.vera.rnrc;
 
-import org.apache.logging.log4j.LogManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ public class ParserApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ParserApplication.class, args);
-        LogManager.getLogger("jdbc").info("Application started");
     }
 
 }
