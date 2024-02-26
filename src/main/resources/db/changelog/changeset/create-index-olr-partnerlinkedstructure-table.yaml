@@ -9,9 +9,9 @@ databaseChangeLog:
               - column:
                   name: pzinskey
                   type: varchar(255)
-#              - column:
-#                  name: id
-#                  type: varchar(255)
+              - column:
+                  name: id
+                  type: bigint
               - column:
                   name: lastname
                   type: varchar(255)

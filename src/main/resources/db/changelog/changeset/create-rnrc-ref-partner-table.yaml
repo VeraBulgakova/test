@@ -8,6 +8,9 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
+                  type: bigint
+              - column:
+                  name: partner_id
                   type: varchar(255)
               - column:
                   name: partnername
@@ -17,9 +20,6 @@ databaseChangeLog:
                   type: varchar(255)
               - column:
                   name: fullname
-                  type: varchar(255)
-              - column:
-                  name: resident
                   type: varchar(255)
               - column:
                   name: ogrn
