@@ -12,5 +12,11 @@ public class PartnerLegalServiceImpl implements PartnerLegalService {
 
     public void addContractor(PartnerLegalEntity contractor) {
         partnerLegalRepository.save(contractor);
+        partnerLegalRepository.save(convertToEntity(contractor));
+    }
+
+    private PartnerLegalEntity convertToEntity(PartnerLegalEntity contractor) {
+        contractor.setPartnerId(String.valueOf(contractor.getId()));
+        return contractor;
     }
 }

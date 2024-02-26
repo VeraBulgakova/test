@@ -63,21 +63,21 @@ public class ResponseRepositoryImpl {
 
     private String createViewForLegalEntity(String dateList, String listName) {
         String sql = "CREATE or replace VIEW viewLegal AS " +
-                "SELECT l.id, r.id as partner_id " +
+                "SELECT l.id, r.partner_id as partner_id " +
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
                 "        l.inn = r.inn " +
                 "        AND l.listname = '" + listName.replace("'", "''") + "' " +
                 "        AND l.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
-                "SELECT l.id, r.id as partner_id " +
+                "SELECT l.id, r.partner_id as partner_id " +
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
                 "        l.ogrn = r.ogrn " +
                 "        AND l.listname = '" + listName.replace("'", "''") + "' " +
                 "        AND l.datelist = '" + dateList.replace("'", "''") + "' " +
                 "union " +
-                "SELECT l.id, r.id as partner_id " +
+                "SELECT l.id, r.partner_id as partner_id " +
                 "FROM rnrc_ref_partner r " +
                 "         JOIN legal_person l ON " +
                 "        l.fullname = r.fullname " +
