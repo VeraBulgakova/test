@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar
+              - column:
+                  name: authority
+                  type: varchar
+
+        - addForeignKeyConstraint:
+            baseColumnNames: username
+            baseTableName: authorities
+            constraintName: authorities_username_fk
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: username
+            referencedTableName: users
+
+        - addNotNullConstraint:
+            constraintName: not_null_username
+            tableName: authorities
+            columnName: username
+
+        - addNotNullConstraint:
+            constraintName: not_null_authority
+            tableName: authorities
+            columnName: authority

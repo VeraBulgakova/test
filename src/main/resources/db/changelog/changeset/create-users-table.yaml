@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  type: varchar
+              - column:
+                  name: password
+                  type: varchar
+              - column:
+                  name: enabled
+                  type: boolean
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: priority
+                  type: int
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: username
