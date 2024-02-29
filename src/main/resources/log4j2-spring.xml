@@ -7,7 +7,7 @@
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,nnnnnnnnn} %m%n"/>
         </File>
         <JDBC name="jdbcappender" tableName="logs">
-            <ConnectionFactory class="com.vera.rnrc.config.Log4J2JDBCConnectionFactory" method="getConnection"/>
+            <ConnectionFactory class="ru.rnrc.re2.partnercheck.config.Log4J2JDBCConnectionFactory" method="getConnection"/>
             <Column name="user_id" pattern="%x" isUnicode="false"/>
             <Column name="date" pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}" isUnicode="false"/>
             <Column name="logger" pattern="%logger" isUnicode="false"/>

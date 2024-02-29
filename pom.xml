@@ -8,8 +8,8 @@
         <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.vera</groupId>
-    <artifactId>rnrc</artifactId>
+    <groupId>ru.rnrc.re2</groupId>
+    <artifactId>partnercheck</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>rnrc</name>
     <description>rnrc</description>
