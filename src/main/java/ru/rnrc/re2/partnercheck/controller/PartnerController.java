@@ -16,7 +16,7 @@ import ru.rnrc.re2.partnercheck.service.PartnerPhysicalService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/partner")
+@RequestMapping("/api/v1")
 public class PartnerController {
     private final PartnerLegalService partnerLegalService;
     private final PartnerPhysicalService partnerPhysicalService;

@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
