@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "rnrc_ref_partner")
@@ -29,5 +31,8 @@ public class PartnerLegal {
 
     @Column(name = "inn")
     private String inn;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partnerLegal")
+    private List<PartnerPhysical> partnerPhysicals;
 
 }

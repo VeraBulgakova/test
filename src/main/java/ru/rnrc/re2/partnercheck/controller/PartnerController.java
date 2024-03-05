@@ -23,7 +23,7 @@ public class PartnerController {
     private static final Logger logger = LogManager.getLogger("jdbc");
 
     @PostMapping("/partner/legal")
-    public ResponseEntity<String> addPartner(@RequestBody PartnerLegal contractor) {
+    public ResponseEntity<String> addPartnerLegal(@RequestBody PartnerLegal contractor) {
         try {
             partnerLegalService.addContractor(contractor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -34,7 +34,7 @@ public class PartnerController {
     }
 
     @PostMapping("/partner/physical")
-    public ResponseEntity<String> addPartner(@RequestBody PartnerPhysical contractor) {
+    public ResponseEntity<String> addPartnerPhysical(@RequestBody PartnerPhysical contractor) {
         try {
             partnerPhysicalService.addContractor(contractor);
             return new ResponseEntity<>(HttpStatus.OK);

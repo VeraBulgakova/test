@@ -55,6 +55,10 @@ public class PartnerPhysical {
     @Column(name = "participantordernumber")
     private String participantordernumber;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_legal_id", referencedColumnName = "id", nullable = false)
+    private PartnerLegal partnerLegal;
+
 
     public String convertTypeToStructureKey() {
 

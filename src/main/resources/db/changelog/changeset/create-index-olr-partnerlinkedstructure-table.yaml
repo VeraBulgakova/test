@@ -12,6 +12,9 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_index_olr_partnerlinkedstructure
               - column:
                   name: lastname
                   type: varchar(255)

@@ -21,13 +21,13 @@ public class AdminController {
     }
 
     @PutMapping(value = "/user/{id}")
-    public User updateUser(@RequestBody UserDTO user) {
-        return service.updateUser(user);
+    public User updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user) {
+        return service.updateUser(id, user);
     }
 
     @DeleteMapping("/user/{id}")
-    public UserDTO softDeleteUser(@PathVariable("id") Integer id) {
-        return service.softDeleteUser(id);
+    public void softDeleteUser(@PathVariable("id") Long id) {
+        service.softDeleteUser(id);
     }
 
     @PostMapping(value = "/authority")

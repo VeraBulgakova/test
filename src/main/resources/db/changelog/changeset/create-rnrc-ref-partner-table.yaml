@@ -9,6 +9,9 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_rnrc_ref_partner
               - column:
                   name: partner_id
                   type: varchar(255)

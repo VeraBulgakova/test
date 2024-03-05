@@ -5,12 +5,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.rnrc.re2.partnercheck.dto.authorization.AuthorityDTO;
 import ru.rnrc.re2.partnercheck.dto.authorization.UserDTO;
 import ru.rnrc.re2.partnercheck.entity.Authority;
 import ru.rnrc.re2.partnercheck.entity.User;
+import ru.rnrc.re2.partnercheck.mapper.UserMapper;
 import ru.rnrc.re2.partnercheck.repository.AuthorityRepository;
 import ru.rnrc.re2.partnercheck.repository.UserRepository;
 
@@ -21,13 +21,12 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
-    private final PasswordEncoder encoder;
+    private final UserMapper userMapper;
     private static final Logger logger = LogManager.getLogger("jdbc");
 
     public User createUser(UserDTO userDTO) {
         try {
-            User user = UserDTO.parseUserDto(userDTO);
-            user.setPassword(encoder.encode(user.getPassword()));
+            User user = userMapper.parseUserDto(userDTO);
             userRepository.save(user);
             return user;
         } catch (Exception e) {
@@ -36,11 +35,11 @@ public class AdminService {
         return null;
     }
 
-    public User updateUser(UserDTO userDTO) {
-        User user = userRepository.findById(userDTO.getId()).orElse(null);
+    public User updateUser(Long id, UserDTO userDTO) {
+        User user = userRepository.findById(id).orElse(null);
         try {
             if (user != null) {
-                user = UserDTO.parseUserDto(userDTO);
+                user = userMapper.parseUserDto(userDTO, user);
                 userRepository.save(user);
             }
         } catch (Exception e) {
@@ -49,7 +48,7 @@ public class AdminService {
         return user;
     }
 
-    public UserDTO softDeleteUser(Integer id) {
+    public void softDeleteUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         try {
             if (user != null) {
@@ -59,7 +58,6 @@ public class AdminService {
         } catch (Exception e) {
             logger.error("AdminService class softDeleteUser method exception: " + e.getMessage());
         }
-        return UserDTO.parseUser(user);
     }
 
     public AuthorityDTO addAuthority(AuthorityDTO authorityDTO) {
