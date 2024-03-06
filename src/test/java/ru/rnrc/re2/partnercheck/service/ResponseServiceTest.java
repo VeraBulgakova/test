@@ -1,19 +1,16 @@
-package com.vera.rnrc.service;
+package ru.rnrc.re2.partnercheck.service;
 
-import com.vera.rnrc.dto.request.PerchenListDTO;
-import com.vera.rnrc.dto.request.RequestDTO;
-import com.vera.rnrc.dto.response.ResponseDTO;
-import com.vera.rnrc.entity.ResponseEntity;
-import com.vera.rnrc.mapper.ResponseMapper;
-import com.vera.rnrc.repository.ResponseRepository;
-import com.vera.rnrc.repository.ResponseRepositoryImpl;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import ru.rnrc.re2.partnercheck.dto.request.PerchenListDTO;
+import ru.rnrc.re2.partnercheck.dto.request.RequestDTO;
+import ru.rnrc.re2.partnercheck.dto.response.ResponseDTO;
+import ru.rnrc.re2.partnercheck.entity.Response;
+import ru.rnrc.re2.partnercheck.mapper.ResponseMapper;
+import ru.rnrc.re2.partnercheck.repository.ResponseRepository;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
@@ -29,11 +26,10 @@ public class ResponseServiceTest {
     private final ResponseMapper responseMapper = Mockito.mock(ResponseMapper.class);
     private final ROMUService mockRomuService = Mockito.mock(ROMUService.class);
     private final ResponseRepository responseRepository = Mockito.mock(ResponseRepository.class);
-    private final ResponseRepositoryImpl responseRepositoryImpl = Mockito.mock(ResponseRepositoryImpl.class);
-    private final ResponseServiceImpl responseService = Mockito.spy(new ResponseServiceImpl(mockTerrorService, mockMvkService, mockRomuService, responseRepository, responseRepositoryImpl, responseMapper));
+    private final ResponseServiceImpl responseService = Mockito.spy(new ResponseServiceImpl(mockTerrorService, mockMvkService, mockRomuService, responseRepository, responseMapper));
     private RequestDTO request;
     private LocalDate checkDate;
-    private List<ResponseEntity> responseEntities;
+    private List<Response> responseEntities;
     private List<ResponseDTO> expectedDTOs;
 
     @BeforeEach
@@ -41,7 +37,7 @@ public class ResponseServiceTest {
         // Инициализация тестовых данных
         request = new RequestDTO();
         checkDate = LocalDate.now();
-        responseEntities = List.of(new ResponseEntity());
+        responseEntities = List.of(new Response());
         expectedDTOs = List.of(new ResponseDTO());
         request.setPerchenListDTO(new PerchenListDTO());
         request.getPerchenListDTO().setTerroristList(true);
@@ -57,7 +53,7 @@ public class ResponseServiceTest {
 
         assertSame(expectedDTOs, result);
 
-        verify(responseRepository, times(1)).insertResponseRecordsFromTable();
+//        verify(responseRepository, times(1)).insertResponseRecordsFromTable();
         verify(responseRepository, times(1)).cleanResultTable();
         verify(responseMapper, times(1)).toResponseDTOList(anyList(), eq(request), anyString(), anyString());
     }

@@ -1,12 +1,12 @@
-package com.vera.rnrc.service;
+package ru.rnrc.re2.partnercheck.service;
 
-import com.vera.rnrc.dto.mvk.MVKPerechenDTO;
-import com.vera.rnrc.mapper.LegalPersonMapper;
-import com.vera.rnrc.mapper.PhysicalPersonMapper;
-import com.vera.rnrc.repository.LegalPersonRepository;
-import com.vera.rnrc.repository.PhysicalPersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import ru.rnrc.re2.partnercheck.dto.mvk.MVKPerechenDTO;
+import ru.rnrc.re2.partnercheck.mapper.LegalPersonMapper;
+import ru.rnrc.re2.partnercheck.mapper.PhysicalPersonMapper;
+import ru.rnrc.re2.partnercheck.repository.LegalPersonRepository;
+import ru.rnrc.re2.partnercheck.repository.PhysicalPersonRepository;
 
 import static org.mockito.Mockito.*;
 

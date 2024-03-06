@@ -1,11 +1,11 @@
-package com.vera.rnrc.service;
+package ru.rnrc.re2.partnercheck.service;
 
-import com.vera.rnrc.mapper.LegalPersonMapper;
-import com.vera.rnrc.mapper.PhysicalPersonMapper;
-import com.vera.rnrc.repository.LegalPersonRepository;
-import com.vera.rnrc.repository.PhysicalPersonRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import ru.rnrc.re2.partnercheck.mapper.LegalPersonMapper;
+import ru.rnrc.re2.partnercheck.mapper.PhysicalPersonMapper;
+import ru.rnrc.re2.partnercheck.repository.LegalPersonRepository;
+import ru.rnrc.re2.partnercheck.repository.PhysicalPersonRepository;
 
 public class ROMUServiceTest {
     PhysicalPersonRepository physicalPersonRepository = Mockito.mock(PhysicalPersonRepository.class);
