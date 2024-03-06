@@ -15,7 +15,6 @@ import ru.rnrc.re2.partnercheck.dto.terror.TERRORPerechenDTO;
 import ru.rnrc.re2.partnercheck.entity.Response;
 import ru.rnrc.re2.partnercheck.mapper.ResponseMapper;
 import ru.rnrc.re2.partnercheck.repository.ResponseRepository;
-import ru.rnrc.re2.partnercheck.repository.ResponseRepositoryImpl;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -37,19 +36,8 @@ public class ResponseServiceImpl implements ResponseService {
     private final MVKService mvkService;
     private final ROMUService romuService;
     private final ResponseRepository responseRepository;
-    private final ResponseRepositoryImpl responseRepositoryImpl;
     private final ResponseMapper responseMapper;
     private static final Logger logger = LogManager.getLogger("jdbc");
-
-    @Override
-    public void createViewForPhysicPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
-        responseRepositoryImpl.createViewForPhysicPerson(dateList, listName);
-    }
-
-    @Override
-    public void createViewForLegalPerson(@Param("dateList") String dateList, @Param("listName") String listName) {
-        responseRepositoryImpl.createViewForLegalPerson(dateList, listName);
-    }
 
     @Override
     public List<ResponseDTO> getCheckResponseForPartners(RequestDTO request, LocalDate checkDate) {
@@ -59,10 +47,7 @@ public class ResponseServiceImpl implements ResponseService {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
 
-        createViewForPhysicPerson(date, request.getPerchenListDTO().getListName());
-        createViewForLegalPerson(date, request.getPerchenListDTO().getListName());
-
-        responseRepository.insertResponseRecordsFromTable();
+        responseRepository.insertResponseRecordsFromTable(request.getPerchenListDTO().getListName(),date);
         List<Response> matchingRecords;
         if (request.isAllPartners()) {
             matchingRecords = responseRepository.findAll();
@@ -70,8 +55,6 @@ public class ResponseServiceImpl implements ResponseService {
             matchingRecords = responseRepository.findAllByPartnerId(request.getPartnerId());
         }
         responseRepository.cleanResultTable();
-        responseRepository.cleanLegalPersonTable();
-        responseRepository.cleanPhysicPersonTable();
         return responseMapper.toResponseDTOList(matchingRecords, request, dateNow, date);
     }
 

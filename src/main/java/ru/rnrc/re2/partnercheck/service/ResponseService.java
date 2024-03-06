@@ -11,12 +11,6 @@ import java.util.List;
 
 public interface ResponseService {
     @Transactional
-    void createViewForPhysicPerson(String dateList, String listName);
-
-    @Transactional
-    void createViewForLegalPerson(String dateList, String listName);
-
-    @Transactional
     List<ResponseDTO> getCheckResponseForPartners(RequestDTO request, LocalDate checkDate);
 
     String uploadXmlFile(MultipartFile file, String type);
