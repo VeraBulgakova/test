@@ -1,8 +1,8 @@
 package ru.rnrc.re2.partnercheck.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ import ru.rnrc.re2.partnercheck.service.PartnerPhysicalService;
 public class PartnerController {
     private final PartnerLegalService partnerLegalService;
     private final PartnerPhysicalService partnerPhysicalService;
-    private static final Logger logger = LogManager.getLogger("jdbc");
+    private static final Logger errorLogger = LoggerFactory.getLogger(PartnerController.class);
 
     @PostMapping("/partner/legal")
     public ResponseEntity<String> addPartnerLegal(@RequestBody PartnerLegal contractor) {
@@ -28,7 +28,7 @@ public class PartnerController {
             partnerLegalService.addContractor(contractor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            logger.error(e);
+            errorLogger.error("Ошибка при добавлении юридического лица: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -39,7 +39,7 @@ public class PartnerController {
             partnerPhysicalService.addContractor(contractor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            logger.error(e);
+            errorLogger.error("Ошибка при добавлении физического лица: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

@@ -3,8 +3,8 @@ package ru.rnrc.re2.partnercheck.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.rnrc.re2.partnercheck.dto.authorization.AuthorityDTO;
 import ru.rnrc.re2.partnercheck.dto.authorization.UserDTO;
@@ -22,7 +22,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
     private final UserMapper userMapper;
-    private static final Logger logger = LogManager.getLogger("jdbc");
+    private static final Logger errorLogger = LoggerFactory.getLogger(AdminService.class);
 
     public User createUser(UserDTO userDTO) {
         try {
@@ -30,7 +30,7 @@ public class AdminService {
             userRepository.save(user);
             return user;
         } catch (Exception e) {
-            logger.error("AdminService class createUser method exception: " + e.getMessage());
+            errorLogger.error("AdminService class createUser method exception: " + e.getMessage());
         }
         return null;
     }
@@ -43,7 +43,7 @@ public class AdminService {
                 userRepository.save(user);
             }
         } catch (Exception e) {
-            logger.error("AdminService class updateUser method exception: " + e.getMessage());
+            errorLogger.error("AdminService class updateUser method exception: " + e.getMessage());
         }
         return user;
     }
@@ -56,7 +56,7 @@ public class AdminService {
                 userRepository.save(user);
             }
         } catch (Exception e) {
-            logger.error("AdminService class softDeleteUser method exception: " + e.getMessage());
+            errorLogger.error("AdminService class softDeleteUser method exception: " + e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class AdminService {
             authorityRepository.save(authority);
             return AuthorityDTO.parseAuthorityDTO(authority);
         } catch (Exception e) {
-            logger.error("AdminService class addAuthority method exception: " + e.getMessage());
+            errorLogger.error("AdminService class addAuthority method exception: " + e.getMessage());
         }
         return null;
     }
