@@ -1,0 +1,17 @@
+package ru.rnrc.re2.partnercheck.dto;
+
+import lombok.Data;
+
+import java.util.List;
+@Data
+public class PartnerDTO {
+    private String partnername;
+
+    private String fullname;
+
+    private String ogrn;
+
+    private String inn;
+
+    private List<LinkedPartnerDTO> linkedPartner;
+}

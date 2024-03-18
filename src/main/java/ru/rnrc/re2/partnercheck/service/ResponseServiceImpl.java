@@ -53,14 +53,18 @@ public class ResponseServiceImpl implements ResponseService {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
 
-        responseRepository.insertResponseRecordsFromTable(request.getPerchenListDTO().getListName(), date);
+        responseRepository.insertResponseRecordsFromTableForPhysicalPerson(request.getPerchenListDTO().getListName(), date);
+        responseRepository.insertResponseRecordsFromTableForLegalPerson(request.getPerchenListDTO().getListName(), date);
         List<Response> matchingRecords;
         if (request.isAllPartners()) {
             matchingRecords = responseRepository.findAll();
         } else {
             matchingRecords = responseRepository.findAllByPartnerId(request.getPartnerId());
         }
-        businessLogger.info("Дата проверки: {}. Название перечня: {} .Количество совпадений: {} ", date, request.getPerchenListDTO().getListName(), responseRepository.findMatchingRecordsCount(request.getPerchenListDTO().getListName(), date));
+        businessLogger.info("Дата проверки: {}. Название перечня: {}. Количество совпадений: {} ",
+                date, request.getPerchenListDTO().getListName(),
+                responseRepository.findMatchingRecordsCountForLegalPerson(request.getPerchenListDTO().getListName(), date)
+                        + responseRepository.findMatchingRecordsCountForPhysicalPerson(request.getPerchenListDTO().getListName(), date));
         responseRepository.cleanResultTable();
         businessLogger.info("Таблица результатов очищена");
         return responseMapper.toResponseDTOList(matchingRecords, request, dateNow, date);

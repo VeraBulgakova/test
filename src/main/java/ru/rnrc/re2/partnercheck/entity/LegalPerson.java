@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LegalPerson {
     @Id
-    private String id;
+    private Long id;
 
     @Column(name = "datelist")
     private String dateList;

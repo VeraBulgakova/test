@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,13 +13,10 @@ import java.util.List;
 @Table(name = "rnrc_ref_partner")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartnerLegal {
+public class Partner {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "partner_id")
-    private String partnerId;
 
     @Column(name = "partnername")
     private String partnername;
@@ -32,7 +30,13 @@ public class PartnerLegal {
     @Column(name = "inn")
     private String inn;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partnerLegal")
-    private List<PartnerPhysical> partnerPhysicals;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partner", cascade = CascadeType.ALL)
+    private List<LinkedPartner> linkedPartner;
 
+    public List<LinkedPartner> getLinkedPartner() {
+        if (linkedPartner == null) {
+            linkedPartner = new ArrayList<>();
+        }
+        return linkedPartner;
+    }
 }

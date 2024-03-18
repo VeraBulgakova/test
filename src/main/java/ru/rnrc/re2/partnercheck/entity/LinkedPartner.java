@@ -10,14 +10,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "index_olr_partnerlinkedstructure")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartnerPhysical {
-
+public class LinkedPartner {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @Column(name = "pzinskey")
-    private String pzinskey;
+    protected String pzinskey;
 
     @Column(name = "inn")
     private String inn;
@@ -57,22 +53,6 @@ public class PartnerPhysical {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_legal_id", referencedColumnName = "id", nullable = false)
-    private PartnerLegal partnerLegal;
+    private Partner partner;
 
-
-    public String convertTypeToStructureKey() {
-
-        switch (linkedstructuretype) {
-            case "Beneficiary":
-                return "BENEFICIARYPARTNERLINKEDSTRUCTURE";
-            case "BenefitHolder":
-                return "PERSONBENEFITHOLDERPARTNERLINKEDSTRUCTURE";
-            case "ManagementBody":
-                return "MANAGEMENTBODYPERSON";
-            case "Representative":
-                return "REPRESENTATIVEPARTNERLINKEDSTRUCTURE";
-            default:
-                return "";
-        }
-    }
 }

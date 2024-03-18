@@ -31,7 +31,7 @@ public class PhysicalPersonMapper {
         if (physicalPersonDTO.getDateOfBirth() != null) {
             dateOfBirth = physicalPersonDTO.getDateOfBirth().replaceAll("-", "");
         }
-        return new PhysicalPerson(String.valueOf(subjectDTO.getSubjectId()),
+        return new PhysicalPerson(Long.parseLong(subjectDTO.getSubjectId()),
                 fileName,
                 listName,
                 physicalPersonDTO.getInn(),
@@ -53,7 +53,7 @@ public class PhysicalPersonMapper {
             dateOfBirth = dateOfBirthDTO.getDate().replace("-", "");
         }
         return new PhysicalPerson(
-                String.valueOf(individual.getDataId()),
+                individual.getDataId(),
                 fileName,
                 listName,
                 null,

@@ -7,7 +7,7 @@ import ru.rnrc.re2.partnercheck.dto.romu.EntityDTO;
 import ru.rnrc.re2.partnercheck.entity.LegalPerson;
 
 @Component
-public class LegalPersonMapper {
+public class PersonMapper {
 
     public LegalPerson convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
 
@@ -16,10 +16,10 @@ public class LegalPersonMapper {
         if (legalEntityDTO.getInn() != null) {
             inn = legalEntityDTO.getInn();
         }
-        return new LegalPerson(subjectDTO.getSubjectId(), fileName, listName, legalEntityDTO.getOgrn(), inn, legalEntityDTO.getFullname());
+        return new LegalPerson(Long.parseLong(subjectDTO.getSubjectId()), fileName, listName, legalEntityDTO.getOgrn(), inn, legalEntityDTO.getFullname());
     }
 
     public LegalPerson convertToLegalPerson(EntityDTO entityDTO, String fileName, String listName) {
-        return new LegalPerson(entityDTO.getDataId(), fileName, listName, null, null, entityDTO.getFirstName());
+        return new LegalPerson(Long.parseLong(entityDTO.getDataId()), fileName, listName, null, null, entityDTO.getFirstName());
     }
 }

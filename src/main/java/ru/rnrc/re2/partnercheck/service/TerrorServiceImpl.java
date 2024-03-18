@@ -8,7 +8,7 @@ import ru.rnrc.re2.partnercheck.dto.terror.ActualPerechenDTO;
 import ru.rnrc.re2.partnercheck.dto.terror.TERRORPerechenDTO;
 import ru.rnrc.re2.partnercheck.entity.LegalPerson;
 import ru.rnrc.re2.partnercheck.entity.PhysicalPerson;
-import ru.rnrc.re2.partnercheck.mapper.LegalPersonMapper;
+import ru.rnrc.re2.partnercheck.mapper.PersonMapper;
 import ru.rnrc.re2.partnercheck.mapper.PhysicalPersonMapper;
 import ru.rnrc.re2.partnercheck.repository.LegalPersonRepository;
 import ru.rnrc.re2.partnercheck.repository.PhysicalPersonRepository;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class TerrorServiceImpl implements TerrorService {
     private final PhysicalPersonRepository physicalPersonRepository;
     private final LegalPersonRepository legalPersonRepository;
-    private final LegalPersonMapper legalPersonMapper;
+    private final PersonMapper personMapper;
     private final PhysicalPersonMapper physicalPersonMapper;
 
 
@@ -59,7 +59,7 @@ public class TerrorServiceImpl implements TerrorService {
 
 
     private LegalPerson convertToLegalPerson(SubjectDTO subjectDTO, String fileName, String listName) {
-        return legalPersonMapper.convertToLegalPerson(subjectDTO, fileName, listName);
+        return personMapper.convertToLegalPerson(subjectDTO, fileName, listName);
     }
 
 }
