@@ -31,12 +31,42 @@ public class Partner {
     private String inn;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "partner", cascade = CascadeType.ALL)
-    private List<LinkedPartner> linkedPartner;
+    private List<LinkedPartner> beneficiary;
 
-    public List<LinkedPartner> getLinkedPartner() {
-        if (linkedPartner == null) {
-            linkedPartner = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partner", cascade = CascadeType.ALL)
+    private List<LinkedPartner> benefitHolder;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partner", cascade = CascadeType.ALL)
+    private List<LinkedPartner> representative;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partner", cascade = CascadeType.ALL)
+    private List<LinkedPartner> managementBodyList;
+
+    public List<LinkedPartner> getBeneficiary() {
+        if (beneficiary == null) {
+            beneficiary = new ArrayList<>();
         }
-        return linkedPartner;
+        return beneficiary;
+    }
+
+    public List<LinkedPartner> getBenefitHolder() {
+        if (benefitHolder == null) {
+            benefitHolder = new ArrayList<>();
+        }
+        return benefitHolder;
+    }
+
+    public List<LinkedPartner> getRepresentative() {
+        if (representative == null) {
+            representative = new ArrayList<>();
+        }
+        return representative;
+    }
+
+    public List<LinkedPartner> getManagementBodyList() {
+        if (managementBodyList == null) {
+            managementBodyList = new ArrayList<>();
+        }
+        return managementBodyList;
     }
 }
