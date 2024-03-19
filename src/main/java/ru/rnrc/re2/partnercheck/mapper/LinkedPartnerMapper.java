@@ -22,8 +22,6 @@ public class LinkedPartnerMapper {
         linkedPartner.setDateOfBirth(convertDate(linkedPartnerDTO.getDateOfBirth()));
         linkedPartner.setPlaceOfBirth(linkedPartnerDTO.getPlaceOfBirth());
         linkedPartner.setLinkedstructuretype(linkedPartnerDTO.getLinkedstructuretype());
-//        linkedPartner.setManagementbodyordernumber(String.valueOf(linkedPartnerDTO.getManagementBodyType()));
-//        linkedPartner.setParticipantordernumber(String.valueOf(linkedPartnerDTO.getBenefitPersonType()));
         return linkedPartner;
     }
 

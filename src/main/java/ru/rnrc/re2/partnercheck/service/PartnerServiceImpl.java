@@ -21,14 +21,14 @@ public class PartnerServiceImpl implements PartnerService {
     private final PartnerMapper partnerMapper;
     private final LinkedPartnerMapper linkedPartnerMapper;
 
-    public void add(PartnerDTO contractorDTO) {
-        Partner partner = partnerMapper.toPartner(contractorDTO);
+    public void add(PartnerDTO partnerDTO) {
+        Partner partner = partnerMapper.toPartner(partnerDTO);
         partnerRepository.save(partner);
         int indexCount = 1;
-        saveLinkedPartner(contractorDTO.getRepresentative(), partner, indexCount);
-        saveLinkedPartner(contractorDTO.getBenefitHolder(), partner, indexCount);
-        saveLinkedPartner(contractorDTO.getBeneficiary(), partner, indexCount);
-        saveLinkedPartner(contractorDTO.getManagementBodyList(), partner, indexCount);
+        saveLinkedPartners(partnerDTO.getRepresentative(), partner, indexCount);
+        saveLinkedPartners(partnerDTO.getBenefitHolder(), partner, indexCount);
+        saveLinkedPartners(partnerDTO.getBeneficiary(), partner, indexCount);
+        saveLinkedPartners(partnerDTO.getManagementBodyList(), partner, indexCount);
         partnerRepository.save(partner);
     }
 
@@ -39,7 +39,7 @@ public class PartnerServiceImpl implements PartnerService {
                 + convertTypeToStructureKey(linkedPartnerDTO.getLinkedstructuretype(), linkedPartnerDTO.getBenefitPersonType(), linkedPartnerDTO.getManagementBodyType());
     }
 
-    private void saveLinkedPartner(List<LinkedPartnerDTO> linkedPartners, Partner partner, int indexCount) {
+    private void saveLinkedPartners(List<LinkedPartnerDTO> linkedPartners, Partner partner, int indexCount) {
         for (int i = 0; i < linkedPartners.size(); i++) {
             LinkedPartnerDTO linkedPartnerDTO = linkedPartners.get(i);
             LinkedPartner linkedPartner = linkedPartnerMapper.toLinkedPartner(linkedPartnerDTO);
@@ -60,7 +60,6 @@ public class PartnerServiceImpl implements PartnerService {
             }
             indexCount++;
         }
-
     }
 
     private String convertTypeToStructureKey(String linkedstructuretype, int benefitPersonType, int managementBodyType) {
