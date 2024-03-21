@@ -55,9 +55,16 @@ databaseChangeLog:
                   name: participantordernumber
                   type: varchar(255)
               - column:
-                  name: parent_legal_id
+                  name: partner_legal_id
                   type: bigint
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_parent
-                    references: rnrc_ref_partner(id)
+
+        - addForeignKeyConstraint:
+            constraintName: FKm5agghpqtl4nx6qwdqkvxmj35
+            baseTableName: index_olr_partnerlinkedstructure
+            baseColumnNames: partner_legal_id
+            referencedTableName: rnrc_ref_partner
+            referencedColumnNames: id
+            onDelete: "CASCADE"
+            onUpdate: "RESTRICT"
