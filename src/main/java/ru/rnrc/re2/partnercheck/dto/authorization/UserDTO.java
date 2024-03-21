@@ -13,7 +13,5 @@ public class UserDTO {
     private String password;
     private Boolean enabled;
     private String email;
-    private String lastActivity;
-    private Integer priority;
     private Boolean isDeleted;
 }

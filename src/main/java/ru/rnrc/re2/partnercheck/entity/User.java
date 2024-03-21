@@ -24,9 +24,6 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "priority")
-    private Integer priority;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 }

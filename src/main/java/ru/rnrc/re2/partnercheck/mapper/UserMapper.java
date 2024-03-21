@@ -17,12 +17,9 @@ public class UserMapper {
         Optional.ofNullable(userDTO).ifPresent(dto -> {
             Optional.ofNullable(dto.getId()).ifPresent(user::setId);
             Optional.ofNullable(dto.getUsername()).ifPresent(user::setUsername);
-
             Optional.ofNullable(dto.getPassword()).filter(pass -> !encoder.matches(pass, user.getPassword()))
                     .map(encoder::encode).ifPresent(user::setPassword);
-
             Optional.ofNullable(dto.getEnabled()).ifPresent(user::setEnabled);
-            Optional.ofNullable(dto.getPriority()).ifPresent(user::setPriority);
             Optional.ofNullable(dto.getEmail()).ifPresent(user::setEmail);
             Optional.ofNullable(dto.getIsDeleted()).ifPresent(user::setIsDeleted);
         });
@@ -36,7 +33,6 @@ public class UserMapper {
         user.setPassword(encoder.encode(userDTO.getPassword()));
         user.setEnabled(userDTO.getEnabled());
         user.setEmail(userDTO.getEmail());
-        user.setPriority(userDTO.getPriority());
         user.setIsDeleted(userDTO.getIsDeleted());
         return user;
     }

@@ -53,8 +53,8 @@ public class ResponseServiceImpl implements ResponseService {
         String date = checkDate.format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String dateNow = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
 
-        responseRepository.insertResponseRecordsFromTableForPhysicalPerson(request.getPerchenListDTO().getListName(), date);
         responseRepository.insertResponseRecordsFromTableForLegalPerson(request.getPerchenListDTO().getListName(), date);
+        responseRepository.insertResponseRecordsFromTableForPhysicalPerson(request.getPerchenListDTO().getListName(), date);
         List<Response> matchingRecords;
         if (request.isAllPartners()) {
             matchingRecords = responseRepository.findAll();

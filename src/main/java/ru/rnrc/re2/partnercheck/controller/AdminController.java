@@ -9,7 +9,7 @@ import ru.rnrc.re2.partnercheck.service.AdminService;
 
 
 @RestController
-@RequestMapping("/admin/v1")
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
