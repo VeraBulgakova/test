@@ -9,9 +9,6 @@ databaseChangeLog:
               - column:
                   name: pzinskey
                   type: varchar(255)
-              - column:
-                  name: id
-                  type: bigint
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_index_olr_partnerlinkedstructure
@@ -57,3 +54,10 @@ databaseChangeLog:
               - column:
                   name: participantordernumber
                   type: varchar(255)
+              - column:
+                  name: parent_legal_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_parent
+                    references: rnrc_ref_partner(id)

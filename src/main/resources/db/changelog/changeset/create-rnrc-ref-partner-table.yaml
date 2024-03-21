@@ -13,9 +13,6 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_rnrc_ref_partner
               - column:
-                  name: partner_id
-                  type: varchar(255)
-              - column:
                   name: partnername
                   type: varchar(255)
               - column:

@@ -4,26 +4,32 @@ databaseChangeLog:
       author: vera.bulgakova
       changes:
         - createTable:
-            tableName: legal_person
+            tableName: response
             columns:
               - column:
                   name: id
                   type: bigint
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_legal_person
+                    primaryKeyName: pk_response
               - column:
-                  name: datelist
+                  name: check_object
                   type: varchar(255)
               - column:
-                  name: listname
+                  name: check_result
                   type: varchar(255)
               - column:
-                  name: ogrn
+                  name: linked_structure_order
                   type: varchar(255)
               - column:
-                  name: inn
+                  name: list_id
                   type: varchar(255)
               - column:
-                  name: fullname
+                  name: participant_order
+                  type: varchar(255)
+              - column:
+                  name: partner_id
+                  type: varchar(255)
+              - column:
+                  name: short_name
                   type: varchar(255)
