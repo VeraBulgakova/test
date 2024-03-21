@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: physical_person
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_physical_person
+              - column:
+                  name: datelist
+                  type: varchar(255)
+              - column:
+                  name: listname
+                  type: varchar(255)
+              - column:
+                  name: inn
+                  type: varchar(255)
+              - column:
+                  name: docseries
+                  type: varchar(255)
+              - column:
+                  name: docnumber
+                  type: varchar(255)
+              - column:
+                  name: fullname
+                  type: varchar(255)
+              - column:
+                  name: lastname
+                  type: varchar(255)
+              - column:
+                  name: firstname
+                  type: varchar(255)
+              - column:
+                  name: middlename
+                  type: varchar(255)
+              - column:
+                  name: dateofbirth
+                  type: varchar(255)
+              - column:
+                  name: placeofbirth
+                  type: varchar(255)

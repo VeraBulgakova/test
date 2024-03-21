@@ -78,6 +78,7 @@ public interface ResponseRepository extends JpaRepository<Response, Long> {
                 group by SUBSTRING(pzinskey FROM '(\\d+)'), iop.participantordernumber, iop.managementbodyordernumber, iop.linkedstructuretype ;
                 ;""", nativeQuery = true)
     void insertResponseRecordsFromTableForPhysicalPerson(String listName, String dateList);
+
     @Modifying
     @Query(value = """
             WITH viewLegal AS (
@@ -133,57 +134,58 @@ public interface ResponseRepository extends JpaRepository<Response, Long> {
     List<Response> findAllByPartnerId(@RequestParam("partnerId") String partnerId);
 
     @Query(value = """ 
-              SELECT COUNT(*) FROM (
-              SELECT l.id, r.id as partner_id
-              FROM rnrc_ref_partner r
-                       JOIN legal_person l ON l.inn = r.inn
-                  AND l.listname = ?1
-                  AND l.datelist = ?2
-              UNION
-              SELECT l.id, r.id as partner_id
-              FROM rnrc_ref_partner r
-                       JOIN legal_person l ON l.ogrn = r.ogrn
-                  AND l.listname = ?1
-                  AND l.datelist = ?2
-              UNION
-              SELECT l.id, r.id as partner_id
-              FROM rnrc_ref_partner r
-                       JOIN legal_person l ON l.fullname = r.fullname
-                  AND l.listname = ?1
-                  AND l.datelist = ?2) as matchingRecords""", nativeQuery = true)
+            SELECT COUNT(*) FROM (
+            SELECT l.id, r.id as partner_id
+            FROM rnrc_ref_partner r
+                     JOIN legal_person l ON l.inn = r.inn
+                AND l.listname = ?1
+                AND l.datelist = ?2
+            UNION
+            SELECT l.id, r.id as partner_id
+            FROM rnrc_ref_partner r
+                     JOIN legal_person l ON l.ogrn = r.ogrn
+                AND l.listname = ?1
+                AND l.datelist = ?2
+            UNION
+            SELECT l.id, r.id as partner_id
+            FROM rnrc_ref_partner r
+                     JOIN legal_person l ON l.fullname = r.fullname
+                AND l.listname = ?1
+                AND l.datelist = ?2) as matchingRecords""", nativeQuery = true)
     Integer findMatchingRecordsCountForLegalPerson(String listName, String dateList);
+
     @Query(value = """ 
-              SELECT COUNT(*) FROM (
-              SELECT p.id,
-                     iop.pzinskey as partner_id
-              FROM index_olr_partnerlinkedstructure iop
-                       JOIN physical_person p ON
-                  p.inn = iop.inn
-                      AND p.listname = ?1
-                      AND p.datelist = ?2
-              union
-              SELECT p.id, iop.pzinskey as partner_id
-              FROM index_olr_partnerlinkedstructure iop
-                       JOIN physical_person p ON
-                  p.docseries = iop.docseries AND p.docnumber = iop.docnumber
-                      AND p.listname = ?1
-                      AND p.datelist = ?2
-              union
-              SELECT p.id, iop.pzinskey as partner_id
-              FROM index_olr_partnerlinkedstructure iop
-                       JOIN physical_person p ON
-                  p.dateofbirth = iop.dateofbirth
-                      AND LOWER(p.lastname) = LOWER(iop.lastname) AND LOWER(p.firstname) = LOWER(iop.firstname)
-                      AND LOWER(p.middlename) = LOWER(iop.middlename)
-                      AND p.listname = ?1
-                      AND p.datelist = ?2
-              union
-              SELECT p.id, iop.pzinskey as partner_id
-              FROM index_olr_partnerlinkedstructure iop
-                       JOIN physical_person p ON
-                  p.dateofbirth = iop.dateofbirth
-                      AND LOWER(p.fullname) = LOWER(iop.fullname)
-                      AND p.listname = ?1
-                      AND p.datelist = ?2) as matchingRecords""", nativeQuery = true)
+            SELECT COUNT(*) FROM (
+            SELECT p.id,
+                   iop.pzinskey as partner_id
+            FROM index_olr_partnerlinkedstructure iop
+                     JOIN physical_person p ON
+                p.inn = iop.inn
+                    AND p.listname = ?1
+                    AND p.datelist = ?2
+            union
+            SELECT p.id, iop.pzinskey as partner_id
+            FROM index_olr_partnerlinkedstructure iop
+                     JOIN physical_person p ON
+                p.docseries = iop.docseries AND p.docnumber = iop.docnumber
+                    AND p.listname = ?1
+                    AND p.datelist = ?2
+            union
+            SELECT p.id, iop.pzinskey as partner_id
+            FROM index_olr_partnerlinkedstructure iop
+                     JOIN physical_person p ON
+                p.dateofbirth = iop.dateofbirth
+                    AND LOWER(p.lastname) = LOWER(iop.lastname) AND LOWER(p.firstname) = LOWER(iop.firstname)
+                    AND LOWER(p.middlename) = LOWER(iop.middlename)
+                    AND p.listname = ?1
+                    AND p.datelist = ?2
+            union
+            SELECT p.id, iop.pzinskey as partner_id
+            FROM index_olr_partnerlinkedstructure iop
+                     JOIN physical_person p ON
+                p.dateofbirth = iop.dateofbirth
+                    AND LOWER(p.fullname) = LOWER(iop.fullname)
+                    AND p.listname = ?1
+                    AND p.datelist = ?2) as matchingRecords""", nativeQuery = true)
     Integer findMatchingRecordsCountForPhysicalPerson(String listName, String dateList);
 }

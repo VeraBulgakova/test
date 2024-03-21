@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-legal-person-table.yaml
+  - include:
+      file: db/changelog/changeset/create-physical_person-table.yaml
+  - include:
+      file: db/changelog/changeset/create-rnrc-ref-partner-table.yaml
+  - include:
+      file: db/changelog/changeset/create-index-olr-partnerlinkedstructure-table.yaml
+  - include:
+      file: db/changelog/changeset/create-log-table.yaml
+  - include:
+      file: db/changelog/changeset/create-users-table.yaml
+  - include:
+      file: db/changelog/changeset/create-authorities-table.yaml
+  - include:
+      file: db/changelog/changeset/create-response-table.yaml

@@ -4,25 +4,26 @@ databaseChangeLog:
       author: vera.bulgakova
       changes:
         - createTable:
-            tableName: rnrc_ref_partner
+            tableName: legal_person
             columns:
               - column:
                   name: id
-                  type: bigserial
-                  autoIncrement: true
+                  type: bigint
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_rnrc_ref_partner
-                    nullable: false
+                    primaryKeyName: pk_legal_person
               - column:
-                  name: partnername
+                  name: datelist
+                  type: varchar(255)
+              - column:
+                  name: listname
+                  type: varchar(255)
+              - column:
+                  name: ogrn
                   type: varchar(255)
               - column:
                   name: inn
                   type: varchar(255)
               - column:
                   name: fullname
-                  type: varchar(255)
-              - column:
-                  name: ogrn
                   type: varchar(255)

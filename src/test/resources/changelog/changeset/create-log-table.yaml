@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vera.bulgakova
+      changes:
+        - createTable:
+            tableName: logs
+            columns:
+              - column:
+                  name: user_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: logger
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: level
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: message
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false

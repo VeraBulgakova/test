@@ -22,6 +22,9 @@ databaseChangeLog:
                   name: firstname
                   type: varchar(255)
               - column:
+                  name: countryname
+                  type: varchar(255)
+              - column:
                   name: docseries
                   type: varchar(255)
               - column:

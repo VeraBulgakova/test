@@ -1,10 +1,12 @@
 package ru.rnrc.re2.partnercheck.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class PartnerDTO {
     private String partnername;
 
