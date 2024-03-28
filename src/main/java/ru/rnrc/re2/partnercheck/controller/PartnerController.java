@@ -1,5 +1,6 @@
 package ru.rnrc.re2.partnercheck.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import ru.rnrc.re2.partnercheck.service.PartnerService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@SecurityRequirement(name = "basicAuth")
 public class PartnerController {
     private final PartnerService partnerLegalService;
     private static final Logger errorLogger = LoggerFactory.getLogger(PartnerController.class);
