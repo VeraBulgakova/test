@@ -1,5 +1,6 @@
 package ru.rnrc.re2.partnercheck.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ public class PartnerController {
     private final PartnerService partnerLegalService;
     private static final Logger errorLogger = LoggerFactory.getLogger(PartnerController.class);
 
+    @Operation(summary = "Add partner",
+            description = "This endpoint accepts information about the partner and all its associated entities and stores it in the system.")
     @PostMapping("/partner")
     public ResponseEntity<String> addPartner(@RequestBody PartnerDTO contractor) {
         try {
