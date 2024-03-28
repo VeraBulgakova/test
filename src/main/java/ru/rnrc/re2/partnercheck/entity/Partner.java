@@ -1,5 +1,6 @@
 package ru.rnrc.re2.partnercheck.entity;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Partner {
 
     @Column(name = "ogrn")
     private String ogrn;
-
+    @Parameter(example = "99999999")
     @Column(name = "inn")
     private String inn;
 
