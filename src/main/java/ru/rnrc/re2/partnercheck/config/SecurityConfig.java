@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,7 +36,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.
+                csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (authorize) -> authorize
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
@@ -49,13 +49,7 @@ public class SecurityConfig {
                                         "/api/v1/partner").permitAll()
                                 .requestMatchers("/api/v1/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
-        http.getSharedObject(AuthenticationManagerBuilder.class)
-                .inMemoryAuthentication()
-                .withUser("admin")
-                .password(passwordEncoder().encode("admin"))
-                .authorities("ADMIN");
+                .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
