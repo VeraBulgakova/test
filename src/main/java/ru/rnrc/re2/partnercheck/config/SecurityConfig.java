@@ -47,7 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/partners/check",
                                         "/api/v1/terrorists/upload",
                                         "/api/v1/partner").permitAll()
-                                .requestMatchers("/api/v1/**").hasAuthority("ADMIN")
+                                .requestMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
         return http.build();

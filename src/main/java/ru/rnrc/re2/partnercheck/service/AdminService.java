@@ -27,6 +27,12 @@ public class AdminService {
     public User createUser(UserDTO userDTO) {
         try {
             User user = userMapper.parseUserDto(userDTO);
+
+            Authority authority = new Authority();
+            authority.setUsername(user);
+            authority.setAuthority("ROLE_USER");
+            authorityRepository.save(authority);
+
             userRepository.save(user);
             return user;
         } catch (Exception e) {
